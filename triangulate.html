@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Polygon Triangulation</title>
+    <style type="text/css">
+      body {
+        font-family: Verdana, Geneva, sans-serif;
+      }
+    </style>
+</head>
+
+<body>
+<!--    <h1>X-Monotone Polygon Triangulation</h1> -->
+    <table>
+      <tr>
+        <td>
+          <!-- This is where the Canvas goes -->
+	      <div id="content"></div>
+        </td>
+        <td style="vertical-align:top; padding:8px;">
+          <!-- This is where the Algorithm goes -->
+          <div id="algorithm">
+            <h2>Algorithm:</h2>
+            <div id="step_one">
+              Sort the points by ascending X value.
+            </div>
+            <div id="step_two">
+              Push the first two points onto the Reflex Chain
+            </div>
+            <div id="case_1" style="border: 1px solid black; margin: 4px; padding: 4px;">
+              <strong>Case 1:</strong> New Point is on a different chain of the Polygon<br />
+              <br />
+              Draw a diagonal from each point on the Relfex Chain to the new point.<br />
+              <em>v</em> = last Point on the Relfex Chain<br />
+              Clear the Relfex Chain<br />
+              Put <em>v</em> back onto the Relfex Chain<br />
+              Put the new point onto the Reflex Chain
+            </div>
+            <div id="case_2" style="border: 1px solid black; margin: 4px; padding: 4px;">
+              <div id="case_2a" style="border: 1px solid black; margin: 4px; padding: 4px;">
+                <strong>Case 2a:</strong> New Point is visible to some (or all) points on the chain.<br />
+                <br />
+                Draw a diagonal from each point on the Reflex Chain that is visible<br />
+                to the new point.<br />
+                Remove all of the points from the Relfex Chain where there was a diagonal draw,<br />
+                except for the last diagonal.<br />
+                Add the new point to the Reflex Chain.
+              </div>
+              <div id="case_2b" style="border: 1px solid black; margin: 4px; padding: 4px;">
+                <strong>Case 2b:</strong> New Point is not visible to any other points on the chain<br />
+                <br />
+                Just add the new point to the Relfex Chain
+              </div>
+            </div>
+          </div>
+		  <p>
+		  	<em style="font-size:12px;">Please enter points in a clock-wise order.</em>
+		  </p>
+        </td>
+      </tr>
+    </table>
+	<br />
+	<div id="controls">
+		<p>Controls:</p>
+		<button id="step_through"></button>
+		<button id="triangulate"></button>
+		<button id="step"></button>
+
+		<p>Info:</p>
+		<div id="info_side"></div>
+		<div id="info_p"></div>
+		<div id="info_reflex_chain"></div>
+		<div id="info_upper_chain"></div>
+		<div id="info_lower_chain"></div>
+
+	</div>
+<!--	<script type="application/dart" src="triangulate.dart"></script> -->
+	<script type="application/javascript" src="out.js"></script>
+</body>
+
+</html>

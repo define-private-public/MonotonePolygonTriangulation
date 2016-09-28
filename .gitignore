@@ -1,0 +1,4 @@
+*.sw*
+out.js
+out.js.deps
+out.js.map
