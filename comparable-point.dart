@@ -1,7 +1,7 @@
 
 library triangulate;
 
-import 'dart:io';
+//import 'dart:io';
 import 'merge-sort.dart';
 
 // Point class, not using Dart's builting because its XY coords are final vars
@@ -56,18 +56,18 @@ class Point {
 }
 
 
-void main() {
-  List<Point> points = [
-    new Point(0, 2),
-    new Point(-1, 8),
-    new Point(7.4, 0),
-    new Point(5, -2),
-    new Point(10.1, 1),
-    new Point(7.3, -1),
-    new Point(-5.8, 0.3),
-  ];
-
-  print(points);
-  print(mergeSort(points));
-}
+//void main() {
+//  List<Point> points = [
+//    new Point(0, 2),
+//    new Point(-1, 8),
+//    new Point(7.4, 0),
+//    new Point(5, -2),
+//    new Point(10.1, 1),
+//    new Point(7.3, -1),
+//    new Point(-5.8, 0.3),
+//  ];
+//
+//  print(points);
+//  print(mergeSort(points));
+//}
 
