@@ -68,6 +68,6 @@ void main() {
   ];
 
   print(points);
-  print(mergesort(points));
+  print(mergeSort(points));
 }
 

@@ -31,8 +31,8 @@ List<Comparable> merge(List<Comparable> left, List<Comparable> right) {
 }
 
 
-// Does a mergesort on a list
-List<Comparable> mergesort(List<Comparable> values) {
+// Does a mergeSort on a list
+List<Comparable> mergeSort(List<Comparable> values) {
   List<Comparable> left = [], right = [], result = [];
 
   // Base case
@@ -45,8 +45,8 @@ List<Comparable> mergesort(List<Comparable> values) {
     right.addAll(values.getRange(middle, values.length));
 
     // Split more
-    left = mergesort(left);
-    right = mergesort(right);
+    left = mergeSort(left);
+    right = mergeSort(right);
 
     // Join
     if (left.last <= right.first) {
@@ -63,6 +63,6 @@ List<Comparable> mergesort(List<Comparable> values) {
 // Main execution
 void main() {
   print(testValues);
-  print(mergesort(testValues));
+  print(mergeSort(testValues));
 }
 
