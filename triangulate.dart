@@ -71,6 +71,33 @@ void drawLineSegment(CanvasRenderingContext2D ctx, LineSegment l, String clr) {
 }
 
 
+// Draws a Polygon (collection of Points), no fill (only outline)
+//   ctx -- a CanvasRenderingContext2D
+//   polygon -- a List of Points that represent the Polygon to draw
+//   clr -- a color to draw the lines
+void drawPolygon(CanvasRenderingContext2D ctx, List<Point> polygon, String clr) {
+  // Need at least two points
+  if (polygon.length < 2)
+    return;
+
+  // Draw the first point
+  Point first = polygon.first;
+  ctx..beginPath()
+     ..lineWidth = lineWidth
+     ..strokeStyle = clr
+     ..moveTo(first.x, first.y);
+
+  // Draw the rest of the segments
+  for (Point p in polygon.skip(1))
+    ctx.lineTo(p.x, p.y);
+
+  // Finish up the line
+  ctx..closePath()
+     ..stroke();
+}
+
+
+
 
 
 // Will toggle on/off "step through" mode
@@ -94,5 +121,13 @@ void main() {
            ..fillRect(0, 0, canvas.width, canvas.height);
 
   drawLineSegment(canvasCtx, new LineSegment(new Point(5, 5), new Point (150, 50)), monotoneLineClr);
+
+  List<Point> polygon = [
+    new Point(10,10),
+    new Point(50,10),
+    new Point(50,50),
+    new Point(10,45),
+  ];
+  drawPolygon(canvasCtx, polygon, monotoneLineClr);
 }
 
