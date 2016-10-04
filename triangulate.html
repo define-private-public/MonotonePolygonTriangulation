@@ -19,7 +19,7 @@
 
     #control-section {
       float: left;
-      text-align: center;
+      width: 140px;
     }
 
     #control-section button {
@@ -49,6 +49,9 @@
 
         <div id="control-section">
           <h2 class="mini-header">Controls:</h2>
+
+          <p>Use the Left Mouse Button to add Points to the Polygon.  Right Click to remove the last added Point.</p>
+          <p>If the Polygon turns red, that means that it isn't X Monotone and will not triangulate.</p>
 
           <button id="triangulate">Triangulate [Off]</button><br>
           <button id="step-through-toggle">Step Through [Off]</button><br>
