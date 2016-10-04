@@ -26,9 +26,20 @@ String caseInactiveClr = rgb(0xFF, 0xFF, 0xFF);
 String caseActiveClr = rgb(153, 214, 255);
 
 
-// Interactive section
+// Interactive HTML section
 CanvasElement canvas = querySelector('#polygon-canvas');
 CanvasRenderingContext2D ctx = canvas.context2D;
+ButtonElement triangulateButton = querySelector('#triangulate');
+ButtonElement stepThroughToggle = querySelector('#step-through-toggle');
+ButtonElement stepButton = querySelector('#step');
+
+
+/*== TODO Info section ==*/
+
+// Algorithm HTML section
+DivElement case1Div = querySelector('#case-one');
+DivElement case2aDiv = querySelector('#case-two-a');
+DivElement case2bDiv = querySelector('#case-two-b');
 
 
 
