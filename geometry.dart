@@ -87,14 +87,14 @@ class LineSegment {
 //   b -- Second Point on the Line
 //   p -- The Point to test
 //
-//   If the return value is negative, p lies to the left of the Line
-//   If the return value is positive, p lies to the right of the Line
+//   If the return value is positive, p lies to the left of the Line
+//   If the return value is negative, p lies to the right of the Line
 //   If the return value is zero, p lies on the Line
 //
 //   All of these are realative to the direction a -> b.  It might be
 //   best to think of those two points defining a Vector.
 num determinant(Point a, Point b, Point p) =>
-  ((b.x * p.y) + (a.x * b.y) + (a.y * p.x)) - ((a.y * b.x) + (a.x * p.y) + (b.y * p.x));
+  (a.x * (b.y - p.y)) + (b.x * (p.y - a.y)) + (p.x * (a.y - b.y));
 
 
 
@@ -102,14 +102,17 @@ num determinant(Point a, Point b, Point p) =>
 
 void main() {
   Point a = new Point(0, 0);
-  Point b = new Point(0, 4);
+  Point b = new Point(4, 0);
 
-  Point p1 = new Point(-1, 2);
-  Point p2 = new Point(0, 2);
-  Point p3 = new Point(1, 2);
+  Point p1 = new Point(2, 1);
+  Point p2 = new Point(2, 0);
+  Point p3 = new Point(2, -1);
 
+  print(p1);
   print(determinant(a, b, p1));
+  print(p2);
   print(determinant(a, b, p2));
+  print(p3);
   print(determinant(a, b, p3));
 }
 
