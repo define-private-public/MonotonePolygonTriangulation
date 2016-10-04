@@ -5,7 +5,7 @@
 
 library triangulate;
 
-import 'dart:io';
+//import 'dart:io';
 
 
 // Point class, not using Dart's builting because its XY coords are final vars
@@ -147,19 +147,19 @@ bool isChainXMonotone(List<Point> chain) {
 
 
 
-void main() {
-  Point a = new Point(0, 0);
-  Point b = new Point(4, 0);
-  Point c = new Point(6, 0);
-  Point d = new Point(8, 0);
-  Point e = new Point(9, 0);
-
-  List<Point> chain = [a, b, c, d, e];
-  print(chain);
-  print(isChainXMonotone(chain));
-
-  chain = [e, d, c, b, a];
-  print(chain);
-  print(isChainXMonotone(chain));
-}
+//void main() {
+//  Point a = new Point(0, 0);
+//  Point b = new Point(4, 0);
+//  Point c = new Point(6, 0);
+//  Point d = new Point(8, 0);
+//  Point e = new Point(9, 0);
+//
+//  List<Point> chain = [a, b, c, d, e];
+//  print(chain);
+//  print(isChainXMonotone(chain));
+//
+//  chain = [e, d, c, b, a];
+//  print(chain);
+//  print(isChainXMonotone(chain));
+//}
 
