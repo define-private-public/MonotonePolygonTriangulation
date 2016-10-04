@@ -10,6 +10,8 @@ import 'geometry.dart';
 /*== Global State Variables ==*/
 // yes, yes... I know they are a bad practice to use, but they make this demo easier to write
 bool stepThroughMode = false;
+bool triangulating = false;
+List<Point> masterPolygon = [];
 
 
 /*== Functions ==*/
@@ -97,10 +99,21 @@ void drawPolygon(CanvasRenderingContext2D ctx, List<Point> polygon, String clr) 
 }
 
 
+// The main drawing function of the program
+void drawScene() {
+  // TODO check for monotonicity
+
+  // Fill the background
+  canvasCtx..fillStyle = backgroundClr
+           ..fillRect(0, 0, canvas.width, canvas.height);
+
+  // Draw the master polygon
+  drawPolygon(canvasCtx, masterPolygon, monotoneLineClr);
+}
 
 
-
-// Will toggle on/off "step through" mode
+/*== Event Handlers ==*/
+// For the stepThrough toggle button, Will toggle on/off "step through" mode
 void onStepThroughToggled(var _) {
   // Toggle step through mode
   stepThroughMode = !stepThroughMode;
@@ -111,23 +124,62 @@ void onStepThroughToggled(var _) {
 }
 
 
+// For the Canvas, Adds a Point to the Polygon 
+void onLeftClick(MouseEvent e) {
+  // On Left press, add a Point
+  if ((e.button == 0) && !triangulating)
+    masterPolygon.add(new Point(e.offset.x, e.offset.y));
+  
+  // redraw the scene
+  drawScene();
+}
+
+
+// For the Canvas, it shows a preview point
+void onMouseMove(MouseEvent e) {
+  // If in edit more, show a preview of a new point
+  if (!triangulating) {
+    masterPolygon.add(new Point(e.offset.x, e.offset.y));
+
+    // redraw the scene
+    drawScene();
+
+    // remove that point now
+    masterPolygon.removeLast();
+  }
+}
+
+
+// For the Canvas, if the mouse was moved out, it will redraw the scene
+// This is so we don't have any left-over preview lines
+void onMouseOut(var _) =>
+  drawScene();
+
+
+// For the Canvas, if there is a Right-Click, it will remove a Point from the polygon
+void onRightClick(MouseEvent e) {
+  // Need to prevent the context menu poping up
+  e.preventDefault();
+
+  // Only remove when not triangulating
+  if (!triangulating) {
+    masterPolygon.removeLast();
+    drawScene();
+  }
+}
+
 
 void main() {
-  // Attach event handlers
+  // Attach event handlers for the control buttons
   stepThroughToggle.onClick.listen(onStepThroughToggled);
 
-  // Fill the background
-  canvasCtx..fillStyle = backgroundClr
-           ..fillRect(0, 0, canvas.width, canvas.height);
+  // Attach event handlers for the Canvas
+  canvas.onClick.listen(onLeftClick);
+  canvas.onContextMenu.listen(onRightClick);
+  canvas.onMouseMove.listen(onMouseMove);
+  canvas.onMouseOut.listen(onMouseOut);
 
-  drawLineSegment(canvasCtx, new LineSegment(new Point(5, 5), new Point (150, 50)), monotoneLineClr);
-
-  List<Point> polygon = [
-    new Point(10,10),
-    new Point(50,10),
-    new Point(50,50),
-    new Point(10,45),
-  ];
-  drawPolygon(canvasCtx, polygon, monotoneLineClr);
+  // Draw the scene
+  drawScene();
 }
 
