@@ -1,8 +1,12 @@
+// gemoetry.dart
+//
+// This file is a collection of Geometric classes and function that will be used
+// throughout the program.
 
 library triangulate;
 
 //import 'dart:io';
-import 'merge-sort.dart';
+
 
 // Point class, not using Dart's builting because its XY coords are final vars
 // This one can also be sorted along the X axis
@@ -22,14 +26,12 @@ class Point {
   }
 
 
-  String toString() {
-    return '(' + x.toString() + ', ' + y.toString() + ')';
-  }
+  String toString() =>
+   '(' + x.toString() + ', ' + y.toString() + ')';
 
 
-  Point copy() {
-    return new Point(x, y);
-  }
+  Point copy() =>
+    new Point(x, y);
 
 
   // Only checks for equality on the X axis
@@ -56,18 +58,24 @@ class Point {
 }
 
 
-//void main() {
-//  List<Point> points = [
-//    new Point(0, 2),
-//    new Point(-1, 8),
-//    new Point(7.4, 0),
-//    new Point(5, -2),
-//    new Point(10.1, 1),
-//    new Point(7.3, -1),
-//    new Point(-5.8, 0.3),
-//  ];
-//
-//  print(points);
-//  print(mergeSort(points));
-//}
+// A class representing a line segment
+class LineSegment {
+  // Endpoints of the line segment
+  Point a;
+  Point b;
+
+  // TODO test if this is making a copy or its own thing
+  Line(Point a_, Point b_) :
+    a = a_,
+    b = b_;
+
+  // TODO test if this is making a copy or its own thing
+  Line copy() =>
+    new Line(a, b);
+
+  
+  toString() =>
+    '{ ' + a.toString() + ' -- ' + b.toString() + ' }';
+}
+
 

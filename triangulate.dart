@@ -4,7 +4,7 @@ library triangulate;
 import 'dart:html';
 import 'stack.dart';
 import 'merge-sort.dart';
-import 'comparable-point.dart';
+import 'geometry.dart';
 
 
 /*== Global State Variables ==*/
@@ -74,6 +74,5 @@ void main() {
   // Fill the background
   ctx..fillStyle = backgroundClr
      ..fillRect(0, 0, canvas.width, canvas.height);
-
 }
 
