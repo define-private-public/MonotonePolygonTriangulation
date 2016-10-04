@@ -97,22 +97,69 @@ num determinant(Point a, Point b, Point p) =>
   (a.x * (b.y - p.y)) + (b.x * (p.y - a.y)) + (p.x * (a.y - b.y));
 
 
+// Checks if a List of Points (treated as a Chain) only ever increase or
+// decrease in the X axis (this means that it's X Monotone)
+// If a Chain has two same points, it will not be considered Monotone
+bool isChainXMonotone(List<Point> chain) {
+  // Need at least two Points to be a Chain
+  // If only two points in the chain, it's automatically Monotone
+  if (chain.length < 2)
+    return false;
+  else if (chain.length == 2)
+    return true;
+
+  // First test if it's ascending monotone
+  bool ascendingMonotone = true;
+  num x = double.NEGATIVE_INFINITY;
+
+  for (Point p in chain) {
+    // Did we find a point that's less than the current X?
+    if (p.x <= x) {
+      ascendingMonotone = false;
+      break;
+    }
+
+    x = p.x;
+  }
+
+  // Are we ascending Monotone?
+  if (ascendingMonotone)
+    return true;
+
+
+  // Check for descending Monotone
+  bool descendingMonontone = true;
+  x = double.INFINITY;
+
+  for (Point p in chain) {
+    // Is there a point greater than the current X?
+    if (p.x >= x) {
+      descendingMonontone = false;
+      break;
+    }
+
+    x = p.x;
+  }
+
+  return descendingMonontone;
+}
+
 
 
 
 void main() {
   Point a = new Point(0, 0);
   Point b = new Point(4, 0);
+  Point c = new Point(6, 0);
+  Point d = new Point(8, 0);
+  Point e = new Point(9, 0);
 
-  Point p1 = new Point(2, 1);
-  Point p2 = new Point(2, 0);
-  Point p3 = new Point(2, -1);
+  List<Point> chain = [a, b, c, d, e];
+  print(chain);
+  print(isChainXMonotone(chain));
 
-  print(p1);
-  print(determinant(a, b, p1));
-  print(p2);
-  print(determinant(a, b, p2));
-  print(p3);
-  print(determinant(a, b, p3));
+  chain = [e, d, c, b, a];
+  print(chain);
+  print(isChainXMonotone(chain));
 }
 
