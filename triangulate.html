@@ -28,18 +28,38 @@
       margin: 6px 0px;
       padding: 6px;
     }
+
+    .control-button {
+
+    }
   </style>
 </head>
 
 <body>
   <div id="content" style="max-width:750px">
     <h1>X-Monotone Polygon Triangulation</h1>
-    <canvas id="polygon-canvas" width="640" height="480"></canvas>
     <div class="row">
-      Controls &amp; Info here
+      <div id="interactive">
+        <canvas id="polygon-canvas" width="300" height="225"></canvas>
+
+        <button id="step-through">Step Through [Off]</button>
+        <button id="triangulate">Triangulate [Off]</button>
+        <button id="step" disabled>Step</button>
+      </div>
     </div>
-      TODO: rewrite the steps to be a bit more accurate
+    <div class="row"
+      <p>Info:</p>
+      <!--
+      <div id="info_side"></div>
+      <div id="info_p"></div>
+      <div id="info_reflex_chain"></div>
+      <div id="info_upper_chain"></div>
+      <div id="info_lower_chain"></div>
+      -->
+    </div>
     <div id="algorithm" class="algorithm-case">
+      TODO: rewrite the steps to be a bit more accurate
+
       <h2 style="margin-top:0px;">Algorithm:</h2>
       <div id="step-one">Sort the points by an ascending X value.</div>
       <div id="step-two">Push the first two points onto the Reflex Chain.</div>
