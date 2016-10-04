@@ -162,7 +162,7 @@ void onRightClick(MouseEvent e) {
   e.preventDefault();
 
   // Only remove when not triangulating
-  if (!triangulating) {
+  if (!triangulating && (masterPolygon.length != 0)) {
     masterPolygon.removeLast();
     drawScene();
   }
