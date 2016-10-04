@@ -79,21 +79,37 @@ class LineSegment {
 }
 
 
+// Computes the Determinant of a Line and a Point
+// (see: https://en.wikipedia.org/wiki/Determinant)
+// This is used to see if a Point lies left, right or on top of a Line
+//
+//   a -- First Point on the Line
+//   b -- Second Point on the Line
+//   p -- The Point to test
+//
+//   If the return value is negative, p lies to the left of the Line
+//   If the return value is positive, p lies to the right of the Line
+//   If the return value is zero, p lies on the Line
+//
+//   All of these are realative to the direction a -> b.  It might be
+//   best to think of those two points defining a Vector.
+num determinant(Point a, Point b, Point p) =>
+  ((b.x * p.y) + (a.x * b.y) + (a.y * p.x)) - ((a.y * b.x) + (a.x * p.y) + (b.y * p.x));
+
+
+
+
 
 void main() {
-  Point a = new Point(2, 3);
-  Point b = a.copy();
-  LineSegment l1 = new LineSegment(a, b);
+  Point a = new Point(0, 0);
+  Point b = new Point(0, 4);
 
-  a.x = -4;
-  print(a);
-  print(b);
+  Point p1 = new Point(-1, 2);
+  Point p2 = new Point(0, 2);
+  Point p3 = new Point(1, 2);
 
-  print(l1);
-
-  LineSegment l2 = l1.copy();
-  l2.b.y = 0;
-  print(l1);
-  print(l2);
+  print(determinant(a, b, p1));
+  print(determinant(a, b, p2));
+  print(determinant(a, b, p3));
 }
 
