@@ -19,7 +19,7 @@ String rgb(int r, int g, int b) =>
 
 
 /*== Some constants ==*/
-// Canvas colors
+// For drawing
 String backgroundClr = rgb(0, 46, 76);
 String monotoneLineClr = rgb(153, 214, 255);
 String nonMonotoneLineClr = rgb(255, 51, 51);
@@ -27,6 +27,7 @@ String upperChainPointClr = rgb(0, 0xFF, 0);
 String lowerChainPointClr = rgb(0, 0, 0xFF);
 String reflexChainClr = rgb(0xFF, 0, 0);
 String currentLineClr = rgb(0xFF, 0x00, 0x00);
+const num lineWidth = 1.5;
 
 // Algorithm Case colors
 String caseInactiveClr = rgb(0xFF, 0xFF, 0xFF);
@@ -39,7 +40,7 @@ const String stepThroughToggleOnText = 'Step Through [On]';
 
 // Interactive HTML section
 CanvasElement canvas = querySelector('#polygon-canvas');
-CanvasRenderingContext2D ctx = canvas.context2D;
+CanvasRenderingContext2D canvasCtx = canvas.context2D;
 ButtonElement triangulateButton = querySelector('#triangulate');
 ButtonElement stepThroughToggle = querySelector('#step-through-toggle');
 ButtonElement stepButton = querySelector('#step');
@@ -51,6 +52,23 @@ ButtonElement stepButton = querySelector('#step');
 DivElement case1Div = querySelector('#case-one');
 DivElement case2aDiv = querySelector('#case-two-a');
 DivElement case2bDiv = querySelector('#case-two-b');
+
+
+/*== Functions ==*/
+
+// Draws a Line Segment
+//   ctx -- a CanvasRenderingContext2D
+//   l -- a LineSegment to draw
+//   clr -- a color to give the line
+void drawLineSegment(CanvasRenderingContext2D ctx, LineSegment l, String clr) {
+  ctx..beginPath()
+     ..lineWidth = lineWidth
+     ..strokeStyle = clr
+     ..moveTo(l.a.x, l.a.y)
+     ..lineTo(l.b.x, l.b.y)
+     ..closePath()
+     ..stroke();
+}
 
 
 
@@ -72,7 +90,9 @@ void main() {
   stepThroughToggle.onClick.listen(onStepThroughToggled);
 
   // Fill the background
-  ctx..fillStyle = backgroundClr
-     ..fillRect(0, 0, canvas.width, canvas.height);
+  canvasCtx..fillStyle = backgroundClr
+           ..fillRect(0, 0, canvas.width, canvas.height);
+
+  drawLineSegment(canvasCtx, new LineSegment(new Point(5, 5), new Point (150, 50)), monotoneLineClr);
 }
 
