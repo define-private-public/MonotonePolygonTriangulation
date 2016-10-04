@@ -5,23 +5,6 @@
   <title>Polygon Triangulation</title>
   <link rel="stylesheet" type="text/css" href="https://16bpp.net/statics/styles/main.css">
   <style type="text/css">
-  /*
-    body {
-      font-family: Verdana, Geneva, sans-serif;
-    }
-
-    .row {
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .row::after {
-      content: "";
-      clear: both;
-      display: block;
-    }
-  */
-
     .algorithm-case {
       border: 1px solid black;
       border-radius: 6px;
@@ -29,8 +12,23 @@
       padding: 6px;
     }
 
-    .control-button {
+    h2.mini-header {
+      margin-top: 0px;
+      margin-bottom: 8px;
+    }
 
+    #control-section {
+      float: left;
+      text-align: center;
+    }
+
+    #control-section button {
+      width: 100%;
+      margin: 2px 0px;;
+    }
+
+    #polygon-canvas {
+      float: left;
     }
   </style>
 </head>
@@ -40,27 +38,37 @@
     <h1>X-Monotone Polygon Triangulation</h1>
     <div class="row">
       <div id="interactive">
-        <canvas id="polygon-canvas" width="300" height="225"></canvas>
+        <canvas id="polygon-canvas" width="560" height="420"></canvas>
+        
+        <!-- vertical spacer -->
+        <div style="float: left;width: 8px;">&nbsp;</div>
 
-        <button id="step-through">Step Through [Off]</button>
-        <button id="triangulate">Triangulate [Off]</button>
-        <button id="step" disabled>Step</button>
+        <div id="control-section">
+          <h2 class="mini-header">Controls:</h2>
+
+          <button id="step-through">Step Through [Off]</button><br>
+          <button id="triangulate">Triangulate [Off]</button><br>
+          <button id="step" disabled>Step</button><br>
+
+          <!-- horizontal spacer -->
+          <div style="height: 24px;">&nbsp;</div>
+
+          <h2 class="mini-header">Info:</h2>
+          <!--
+          <div id="info_side"></div>
+          <div id="info_p"></div>
+          <div id="info_reflex_chain"></div>
+          <div id="info_upper_chain"></div>
+          <div id="info_lower_chain"></div>
+          -->
+        </div>
       </div>
     </div>
-    <div class="row"
-      <p>Info:</p>
-      <!--
-      <div id="info_side"></div>
-      <div id="info_p"></div>
-      <div id="info_reflex_chain"></div>
-      <div id="info_upper_chain"></div>
-      <div id="info_lower_chain"></div>
-      -->
-    </div>
-    <div id="algorithm" class="algorithm-case">
-      TODO: rewrite the steps to be a bit more accurate
 
-      <h2 style="margin-top:0px;">Algorithm:</h2>
+    <div id="algorithm" class="algorithm-case">
+      <span style="background: yellow">TODO: rewrite the steps to be a bit more accurate</span>
+
+      <h2 class="mini-header">Algorithm:</h2>
       <div id="step-one">Sort the points by an ascending X value.</div>
       <div id="step-two">Push the first two points onto the Reflex Chain.</div>
 
