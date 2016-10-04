@@ -5,6 +5,12 @@ import 'dart:html';
 import 'merge-sort.dart';
 import 'comparable-point.dart';
 
+
+/*== Global State Variables ==*/
+// yes, yes... I know they are a bad practice to use, but they make this demo easier to write
+bool stepThroughMode = false;
+
+
 /*== Functions ==*/
 // Makes a nice RGB value
 String rgb(int r, int g, int b) =>
@@ -25,6 +31,10 @@ String currentLineClr = rgb(0xFF, 0x00, 0x00);
 String caseInactiveClr = rgb(0xFF, 0xFF, 0xFF);
 String caseActiveClr = rgb(153, 214, 255);
 
+// Text
+const String stepThroughToggleOffText = 'Step Through [Off]';
+const String stepThroughToggleOnText = 'Step Through [On]';
+
 
 // Interactive HTML section
 CanvasElement canvas = querySelector('#polygon-canvas');
@@ -43,7 +53,23 @@ DivElement case2bDiv = querySelector('#case-two-b');
 
 
 
+
+// Will toggle on/off "step through" mode
+void onStepThroughToggled(var _) {
+  // Toggle step through mode
+  stepThroughMode = !stepThroughMode;
+
+  // Alter the HTML & CSS of the button
+  stepThroughToggle.text = stepThroughMode ? stepThroughToggleOnText : stepThroughToggleOffText;
+  stepThroughToggle.classes.toggle('toggle-on', stepThroughMode);
+}
+
+
+
 void main() {
+  // Attach event handlers
+  stepThroughToggle.onClick.listen(onStepThroughToggled);
+
   // Fill the background
   ctx..fillStyle = backgroundClr
      ..fillRect(0, 0, canvas.width, canvas.height);
