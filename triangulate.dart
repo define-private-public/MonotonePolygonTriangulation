@@ -2,6 +2,7 @@
 library triangulate;
 
 import 'dart:html';
+import 'stack.dart';
 import 'merge-sort.dart';
 import 'comparable-point.dart';
 
@@ -73,5 +74,19 @@ void main() {
   // Fill the background
   ctx..fillStyle = backgroundClr
      ..fillRect(0, 0, canvas.width, canvas.height);
+
+  Stack<num> stack = new Stack<num>();
+  stack.push(1);
+  stack.push(1.3);
+  stack.push(5);
+  var s2 = stack.copy();
+  print(stack);
+  print(stack.pop());
+  print(stack.size());
+  print(stack);
+  stack.clear();
+  print(stack);
+  print(s2);
+
 }
 
