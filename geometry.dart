@@ -5,7 +5,7 @@
 
 library triangulate;
 
-//import 'dart:io';
+import 'dart:io';
 
 
 // Point class, not using Dart's builting because its XY coords are final vars
@@ -65,17 +65,35 @@ class LineSegment {
   Point b;
 
   // TODO test if this is making a copy or its own thing
-  Line(Point a_, Point b_) :
-    a = a_,
-    b = b_;
+  LineSegment (Point a_, Point b_) :
+    a = a_.copy(),
+    b = b_.copy();
 
   // TODO test if this is making a copy or its own thing
-  Line copy() =>
-    new Line(a, b);
+  LineSegment copy() =>
+    new LineSegment(a, b);
 
   
-  toString() =>
+  String toString() =>
     '{ ' + a.toString() + ' -- ' + b.toString() + ' }';
 }
 
+
+
+void main() {
+  Point a = new Point(2, 3);
+  Point b = a.copy();
+  LineSegment l1 = new LineSegment(a, b);
+
+  a.x = -4;
+  print(a);
+  print(b);
+
+  print(l1);
+
+  LineSegment l2 = l1.copy();
+  l2.b.y = 0;
+  print(l1);
+  print(l2);
+}
 
