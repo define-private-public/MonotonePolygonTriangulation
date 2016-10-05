@@ -196,12 +196,12 @@ void drawScene() {
     List<LineSegment> diagonals = getDiagonals(masterPolygon);
     print(diagonals);
 
-//    for (LineSegment l in diagonals)
-//      drawLineSegment(canvasCtx, l, monotoneLineClr); 
+    for (LineSegment l in diagonals)
+      drawLineSegment(canvasCtx, l, monotoneLineClr); 
 
     // Draw step line
     if (stepThroughMode && (stepNumber > 0) && (stepNumber <= masterPolygon.length)) {
-      Point p = getPointAtIndex(masterPolygon, (stepNumber - 1));
+      Point p = getPointAtProcessingIndex(masterPolygon, (stepNumber - 1));
       if (p != null) {
         LineSegment l = new LineSegment(
           new Point(p.x, 0),

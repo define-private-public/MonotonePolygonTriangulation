@@ -291,7 +291,7 @@ FromChain getNextPoint(Point p, List<Point> upperChain, List<Point> lowerChain) 
 // Get's the Point from the Polygon, with respect to ascending X axis order.
 // This function is unfortunatly a little computationally intensive for this example
 // TODO document better
-Point getPointAtIndex(List<Point> polygon, int index) {
+Point getPointAtProcessingIndex(List<Point> polygon, int index) {
   List<Point> uc = [];
   List<Point> lc = [];
   bool gotChains = getUpperAndLowerChains(polygon, uc, lc);
