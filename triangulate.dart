@@ -12,6 +12,8 @@ import 'geometry.dart';
 bool stepThroughMode = false;
 bool triangulating = false;
 List<Point> masterPolygon = [];
+List<Point> lowerChain = [];
+List<Point> upperChain = [];
 
 
 /*== Functions ==*/
@@ -181,5 +183,10 @@ void main() {
 
   // Draw the scene
   drawScene();
+
+  // Some testing code for the chains
+  getUpperAndLowerChains(masterPolygon, upperChain, lowerChain);
+  print(upperChain);
+  print(lowerChain);
 }
 

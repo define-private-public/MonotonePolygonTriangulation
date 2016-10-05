@@ -145,6 +145,23 @@ bool isChainXMonotone(List<Point> chain) {
 }
 
 
+// This function will retrive the upper and lower chains of a Polygon
+//   polygon - a List of Points that make up a (closed) polygon
+//   uc - a pointer to a List<Point>, will be the upper chain
+//   lc - a pointer to a List<Point>, will be the lower chain
+//
+// Note that the two return chains will include duplicate points.  These
+// will always be the first and last elements of each chain.
+void getUpperAndLowerChains(List<Point> Polygon, List<Point> uc, List<Point> lc) {
+  // Clear out the chains
+  uc.clear();
+  lc.clear();
+
+  uc.add(new Point(0, 0));
+  lc.add(new Point(1, 1));
+}
+
+
 
 
 //void main() {
