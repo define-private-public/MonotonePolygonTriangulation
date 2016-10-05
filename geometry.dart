@@ -6,6 +6,16 @@
 library triangulate;
 
 //import 'dart:io';
+import 'stack.dart';
+
+
+// Used when pulling off points from the chains
+enum FromChain {
+  None,
+  Upper,
+  Lower
+}
+
 
 
 // Point class, not using Dart's builting because its XY coords are final vars
@@ -230,6 +240,121 @@ bool getUpperAndLowerChains(List<Point> polygon, List<Point> uc, List<Point> lc)
   mkChain(lc, -1 * dir);
 
   return true;
+}
+
+
+// Pulls off Points from the upper and lower chains.  All paramters need to be
+// instantiated before calling this funciton.  This will (possibly) modify the
+// values of all parameters.
+//
+//   p -- The Point that has been pulled off
+//   upperChain -- The upper chain of the Polygon
+//   lowerChain -- The upper chain of the Polygon
+//
+// This function returns which Chain the Point was pulled off of.  If
+// FromChain.None is returned, then there are no points on the chains.
+FromChain getNextPoint(Point p, List<Point> upperChain, List<Point> lowerChain) {
+  int uLen = upperChain.length;
+  int lLen = lowerChain.length;
+
+  // If both chains are empty, return None
+  if ((uLen == 0) && (lLen == 0))
+    return FromChain.None;
+
+  // If one chain is emtpy but the other is not, pop a Point
+  if (lLen == 0) {
+    // Upper Chain has stuff
+    p.setFrom(upperChain.removeAt(0));
+    return FromChain.Upper;
+  } else if (uLen == 0) {
+    // Lower Chain has stuff
+    p.setFrom(lowerchain.removeAt(0));
+    return FromChain.Lower;
+  }
+
+  // Whichover one has the lower X value is poped next
+  num uX = upperChain[0].x;
+  num lX = lowerChain[0].x;
+  
+  if (uX <= lX) {
+    // Upper Chain 
+    p.setFrom(upperChain.removeAt(0));
+    return FromChain.Upper;
+  } else if (lX < uX) {
+    // Lower Chain has stuff
+    p.setFrom(lowerchain.removeAt(0));
+    return FromChain.Lower;
+  }
+}
+
+
+// Does the Triangulation of the Polygon
+//   polygon -- a List of Points that is an X Monotone polygon
+//
+// Returns a List of LineSegments, that are the diagonals that create the
+// triangulated Polygon.
+// TODO step for reflex chain
+List<LineSegment> getDiagonals(List<Point> polygon) {
+  List<LineSegment> diagonals = [];
+
+  // Need at least 4 points to triangulate
+  if (polygon.length < 4)
+    return diagonals;
+
+  // Get the Chains
+  List<Point> upperChain = [], lowerChain = [];
+  getUpperAndLowerChains(masterPolygon, upperChain, lowerChain);
+  lowerChain.removeAt(0);   // Pop off first/last of lower (remove duplicates)
+  lowerChain.removeLast();
+
+  // Reflex Chain
+  Stack<Point> reflexChain = [];
+  FromChain relfexOnSide = FromChain.None;
+
+  // Put the first two points onto the reflex chain
+  // First Point
+  Point p = new Point(0, 0);
+  FromChain side = getNextPoint(p, upperChain, lowerChain);
+  relfexChain.push(p);
+
+  // Second point
+  side = getNextPoint(p, upperChain, lowerChain);
+  relfextChain.push(p);
+
+  // Loop through creating the diagonals, peel of each Point
+  FromChain prevSide = side;
+  side = getNextPoint(p, upperChain, lowerChain);
+  while (side != FromChain.None) {
+    // Case 1, p is on the opposite side of the Chain
+
+    // Get the first Point off, it will be our new 'u'
+    bool gotFirst = false;
+    Point u;
+
+    // Make the diagonals to all of the Points on the Relfex Chain, except for the last one
+    // TODO refactor this blow, it's kind of bad
+    while(relfexChain.size() > 1) {
+      // Pop from stack & make a diagonal
+      Point v = reflexChain.pop();
+      diagonals.add(new LineSegment(v, p));
+
+      if (!gotFirst) {
+        u = v;
+        gotFirst = true;
+      }
+    }
+
+    // Ignore the last one
+    reflexChain.pop();
+
+    // The first point and the last are now on the Relfex Chain
+    relfexChain.push(u);
+    relfexChain.push(p);
+  }
+
+
+
+
 }
 
 

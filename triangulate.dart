@@ -8,16 +8,9 @@ import 'geometry.dart';
 
 
 /*== Return values ==*/
-// Used when pulling off points from the chains
-enum FromChain {
-  Empty,
-  Upper,
-  Lower
-}
-
-
 // TODO document
 enum AlgorithmCase {
+  Invalid,
   One,
   TwoA,
   TwoB
@@ -76,49 +69,6 @@ DivElement case2bDiv = querySelector('#case-two-b');
 
 
 /*== Functions ==*/
-// Pulls off Points from the upper and lower chains.  All paramters need to be
-// instantiated before calling this funciton.  This will (possibly) modify the
-// values of all parameters.
-//
-//   p -- The Point that has been pulled off
-//   upperChain -- The upper chain of the Polygon
-//   lowerChain -- The upper chain of the Polygon
-//
-// This function returns which Chain the Point was pulled off of.  If
-// FromChain.Empty is returned, then there are no points on the chains.
-FromChain getNextPoint(Point p, List<Point> upperChain, List<Point> lowerChain) {
-  int uLen = upperChain.length;
-  int lLen = lowerChain.length;
-
-  // If both chains are empty, return Empty
-  if ((uLen == 0) && (lLen == 0))
-    return FromChain.Empty;
-
-  // If one chain is emtpy but the other is not, pop a Point
-  if (lLen == 0) {
-    // Upper Chain has stuff
-    p.setFrom(upperChain.removeAt(0));
-    return FromChain.Upper;
-  } else if (uLen == 0) {
-    // Lower Chain has stuff
-    p.setFrom(lowerchain.removeAt(0));
-    return FromChain.Lower;
-  }
-
-  // Whichover one has the lower X value is poped next
-  num uX = upperChain[0].x;
-  num lX = lowerChain[0].x;
-  
-  if (uX <= lX) {
-    // Upper Chain 
-    p.setFrom(upperChain.removeAt(0));
-    return FromChain.Upper;
-  } else if (lX < uX) {
-    // Lower Chain has stuff
-    p.setFrom(lowerchain.removeAt(0));
-    return FromChain.Lower;
-  }
-}
 
 
 // Draws a Line Segment
