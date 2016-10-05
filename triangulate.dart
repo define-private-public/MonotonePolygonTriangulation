@@ -7,13 +7,30 @@ import 'merge-sort.dart';
 import 'geometry.dart';
 
 
+/*== Return values ==*/
+// Used when pulling off points from the chains
+enum FromChain {
+  Empty,
+  Upper,
+  Lower
+}
+
+
+// TODO document
+enum AlgorithmCase {
+  One,
+  TwoA,
+  TwoB
+}
+
+
 /*== Global State Variables ==*/
 // yes, yes... I know they are a bad practice to use, but they make this demo easier to write
 bool stepThroughMode = false;
 bool triangulating = false;
 List<Point> masterPolygon = [];
-List<Point> lowerChain = [];
-List<Point> upperChain = [];
+//List<Point> lowerChain = [];
+//List<Point> upperChain = [];
 
 
 /*== Functions ==*/
@@ -59,6 +76,50 @@ DivElement case2bDiv = querySelector('#case-two-b');
 
 
 /*== Functions ==*/
+// Pulls off Points from the upper and lower chains.  All paramters need to be
+// instantiated before calling this funciton.  This will (possibly) modify the
+// values of all parameters.
+//
+//   p -- The Point that has been pulled off
+//   upperChain -- The upper chain of the Polygon
+//   lowerChain -- The upper chain of the Polygon
+//
+// This function returns which Chain the Point was pulled off of.  If
+// FromChain.Empty is returned, then there are no points on the chains.
+FromChain getNextPoint(Point p, List<Point> upperChain, List<Point> lowerChain) {
+  int uLen = upperChain.length;
+  int lLen = lowerChain.length;
+
+  // If both chains are empty, return Empty
+  if ((uLen == 0) && (lLen == 0))
+    return FromChain.Empty;
+
+  // If one chain is emtpy but the other is not, pop a Point
+  if (lLen == 0) {
+    // Upper Chain has stuff
+    p.setFrom(upperChain.removeAt(0));
+    return FromChain.Upper;
+  } else if (uLen == 0) {
+    // Lower Chain has stuff
+    p.setFrom(lowerchain.removeAt(0));
+    return FromChain.Lower;
+  }
+
+  // Whichover one has the lower X value is poped next
+  num uX = upperChain[0].x;
+  num lX = lowerChain[0].x;
+  
+  if (uX <= lX) {
+    // Upper Chain 
+    p.setFrom(upperChain.removeAt(0));
+    return FromChain.Upper;
+  } else if (lX < uX) {
+    // Lower Chain has stuff
+    p.setFrom(lowerchain.removeAt(0));
+    return FromChain.Lower;
+  }
+}
+
 
 // Draws a Line Segment
 //   ctx -- a CanvasRenderingContext2D
@@ -104,13 +165,13 @@ void drawPolygon(CanvasRenderingContext2D ctx, List<Point> polygon, String clr) 
 // The main drawing function of the program
 // It has some non-drawing logic though...
 void drawScene() {
-  // Get the chains
-  getUpperAndLowerChains(masterPolygon, upperChain, lowerChain);
+  // Get the chains, Have to do a swap becuase Canvas is an upside down cartesian graph
+  List<Point> upperChain = [], lowerChain = [];
+  getUpperAndLowerChains(masterPolygon, lowerChain, upperChain);
 
-  // Have to do a swap becuase Canvas is an upside down cartesian graph
-  List<Point> swap = upperChain;
-  upperChain = lowerChain;
-  lowerChain = swap;
+  // Pop off the first and last parts of the lower chain (no duplicates)
+  lowerChain.removeAt(0);
+  lowerChain.removeLast();
 
   // Check if polygon is monotone
   bool isMonotone = isChainXMonotone(upperChain) && isChainXMonotone(lowerChain);
@@ -201,5 +262,7 @@ void main() {
 
   // Draw the scene
   drawScene();
+
+//  print(getNextPoint(new Point(0, 0), [], []));
 }
 
