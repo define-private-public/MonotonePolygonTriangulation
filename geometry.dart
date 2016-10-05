@@ -288,6 +288,30 @@ FromChain getNextPoint(Point p, List<Point> upperChain, List<Point> lowerChain) 
 }
 
 
+// Get's the Point from the Polygon, with respect to ascending X axis order.
+// This function is unfortunatly a little computationally intensive for this example
+// TODO document better
+Point getPointAtIndex(List<Point> polygon, int index) {
+  List<Point> uc = [];
+  List<Point> lc = [];
+  bool gotChains = getUpperAndLowerChains(polygon, uc, lc);
+  
+  if (!gotChains)
+    return null;
+
+  // Run through until we've gotten all of the points
+  Point p = new Point(0, 0);
+  FromChain side = getNextPoint(p, uc, lc);
+  for (int i = 0; (side != FromChain.None) && (i <= index) ; i++)
+    FromChain side = getNextPoint(p, uc, lc);
+  
+  if (side == FromChain.None)
+    return null;
+  else
+    return p;
+}
+
+
 // Does the Triangulation of the Polygon
 //   polygon -- a List of Points that is an X Monotone polygon
 //

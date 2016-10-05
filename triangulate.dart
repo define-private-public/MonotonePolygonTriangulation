@@ -198,6 +198,18 @@ void drawScene() {
 
 //    for (LineSegment l in diagonals)
 //      drawLineSegment(canvasCtx, l, monotoneLineClr); 
+
+    // Draw step line
+    if (stepThroughMode && (stepNumber > 0) && (stepNumber <= masterPolygon.length)) {
+      Point p = getPointAtIndex(masterPolygon, (stepNumber - 1));
+      if (p != null) {
+        LineSegment l = new LineSegment(
+          new Point(p.x, 0),
+          new Point(p.x, canvas.width)
+        );
+        drawLineSegment(canvasCtx, l, currentLineClr);
+      }
+    }
   }
 }
 
