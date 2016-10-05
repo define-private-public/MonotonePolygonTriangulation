@@ -387,7 +387,7 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
           if (addDiagonal) {
             // TODO comment is wrong here (or the code is)  figure out the issue
             // Add the diagonal b -> p, remove a from the Relfex Chain
-            diagonals.add(new Line(a, p));
+            diagonals.add(new LineSegment(a, p));
             reflexChain.pop();
 
             // Add evertying but the last Point
