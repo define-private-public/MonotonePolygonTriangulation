@@ -103,7 +103,7 @@ num determinant(Point a, Point b, Point p) =>
 
 // Checks if a List of Points (treated as a Chain) only ever increase or
 // decrease in the X axis (this means that it's X Monotone)
-// If a Chain has two same points, it will not be considered Monotone
+// If a Chain has two Points that have the same X value, it will be considered Monotone
 bool isChainXMonotone(List<Point> chain) {
   // Need at least two Points to be a Chain
   // If only two points in the chain, it's automatically Monotone
@@ -118,7 +118,7 @@ bool isChainXMonotone(List<Point> chain) {
 
   for (Point p in chain) {
     // Did we find a point that's less than the current X?
-    if (p.x <= x) {
+    if (p.x < x) {
       ascendingMonotone = false;
       break;
     }
@@ -137,7 +137,7 @@ bool isChainXMonotone(List<Point> chain) {
 
   for (Point p in chain) {
     // Is there a point greater than the current X?
-    if (p.x >= x) {
+    if (p.x > x) {
       descendingMonontone = false;
       break;
     }

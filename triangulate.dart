@@ -112,6 +112,7 @@ void drawScene() {
   upperChain = lowerChain;
   lowerChain = swap;
 
+  // Check if polygon is monotone
   bool isMonotone = isChainXMonotone(upperChain) && isChainXMonotone(lowerChain);
 
   // Fill the background
