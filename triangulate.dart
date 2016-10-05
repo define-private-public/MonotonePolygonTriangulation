@@ -50,12 +50,14 @@ String caseActiveClr = rgb(153, 214, 255);
 // Text
 const String stepThroughToggleOffText = 'Step Through [Off]';
 const String stepThroughToggleOnText = 'Step Through [On]';
+const String triangulateToggleOffText = 'Triangulate [Off]';
+const String triangulateToggleOnText = 'Triangulate [On]';
 
 
 // Interactive HTML section
 CanvasElement canvas = querySelector('#polygon-canvas');
 CanvasRenderingContext2D canvasCtx = canvas.context2D;
-ButtonElement triangulateButton = querySelector('#triangulate');
+ButtonElement triangulateToggle = querySelector('#triangulate');
 ButtonElement stepThroughToggle = querySelector('#step-through-toggle');
 ButtonElement stepButton = querySelector('#step');
 
@@ -132,6 +134,16 @@ void drawScene() {
 
   // Draw the master polygon
   drawPolygon(canvasCtx, masterPolygon, isMonotone ? monotoneLineClr : nonMonotoneLineClr);
+
+  // If triangulating, draw the diagonals
+  if (triangulating) {
+    // Get them
+    List<LineSegment> diagonals = getDiagonals(masterPolygon);
+    print(diagonals);
+
+    for (LineSegment l in diagonals)
+      drawLineSegment(canvasCtx, l, monotoneLineClr); 
+  }
 }
 
 
@@ -192,6 +204,21 @@ void onRightClick(MouseEvent e) {
 }
 
 
+// For the Triangulate button, when it's clicked
+// It will toggle the triangulation state
+void onTriangulateToggled(var _) {
+  // Toggle the triangulation state
+  triangulating = !triangulating;
+
+  // draw the scene
+  drawScene();
+
+  // Set HTML & CSS
+  triangulateToggle.text = triangulating ? triangulateToggleOnText : triangulateToggleOffText;
+  triangulateToggle.classes.toggle('toggle-on', triangulating);
+}
+
+
 void main() {
   // Some testing code for the chains
   masterPolygon.add(new Point(180, 200));
@@ -203,6 +230,7 @@ void main() {
 
   // Attach event handlers for the control buttons
   stepThroughToggle.onClick.listen(onStepThroughToggled);
+  triangulateToggle.onClick.listen(onTriangulateToggled);
 
   // Attach event handlers for the Canvas
   canvas.onClick.listen(onLeftClick);

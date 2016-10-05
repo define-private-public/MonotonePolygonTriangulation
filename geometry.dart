@@ -89,7 +89,7 @@ class LineSegment {
 
   
   String toString() =>
-    '{ ' + a.toString() + ' -- ' + b.toString() + ' }';
+    '{' + a.toString() + ' -- ' + b.toString() + '}';
 }
 
 
@@ -268,7 +268,7 @@ FromChain getNextPoint(Point p, List<Point> upperChain, List<Point> lowerChain) 
     return FromChain.Upper;
   } else if (uLen == 0) {
     // Lower Chain has stuff
-    p.setFrom(lowerchain.removeAt(0));
+    p.setFrom(lowerChain.removeAt(0));
     return FromChain.Lower;
   }
 
@@ -282,7 +282,7 @@ FromChain getNextPoint(Point p, List<Point> upperChain, List<Point> lowerChain) 
     return FromChain.Upper;
   } else if (lX < uX) {
     // Lower Chain has stuff
-    p.setFrom(lowerchain.removeAt(0));
+    p.setFrom(lowerChain.removeAt(0));
     return FromChain.Lower;
   }
 }
@@ -303,29 +303,29 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
 
   // Get the Chains
   List<Point> upperChain = [], lowerChain = [];
-  getUpperAndLowerChains(masterPolygon, upperChain, lowerChain);
+  getUpperAndLowerChains(polygon, upperChain, lowerChain);
   lowerChain.removeAt(0);   // Pop off first/last of lower (remove duplicates)
   lowerChain.removeLast();
 
   // Reflex Chain
-  Stack<Point> reflexChain = [];
-  FromChain relfexOnSide = FromChain.None;
+  Stack<Point> reflexChain = new Stack<Point>();
+  FromChain reflexOnSide = FromChain.None;
 
   // Put the first two points onto the reflex chain
   // First Point
   Point p = new Point(0, 0);
   FromChain side = getNextPoint(p, upperChain, lowerChain);
-  relfexChain.push(p);
+  reflexChain.push(p);
 
   // Second point
   side = getNextPoint(p, upperChain, lowerChain);
-  relfextChain.push(p);
+  reflexChain.push(p);
 
   // Loop through creating the diagonals, peel of each Point
   FromChain prevSide = side;
   side = getNextPoint(p, upperChain, lowerChain);
   while (side != FromChain.None) {
-    if (side != lastSide) {
+    if (side != prevSide) {
       // Case 1, p is on the opposite side of the Reflex Chain
 
       // Get the first Point off, it will be our new 'u'
@@ -334,7 +334,7 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
 
       // Make the diagonals to all of the Points on the Relfex Chain, except for the last one
       // TODO refactor this below, it's kind of bad
-      while(relfexChain.size() > 1) {
+      while(reflexChain.size() > 1) {
         // Pop from stack & make a diagonal
         Point v = reflexChain.pop();
         diagonals.add(new LineSegment(v, p));
@@ -349,8 +349,8 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
       reflexChain.pop();
 
       // The first point and the last are now on the Relfex Chain
-      relfexChain.push(u);
-      relfexChain.push(p);
+      reflexChain.push(u);
+      reflexChain.push(p);
     } else {
       // Case 2, p is on the same side of the Reflex Chain
       // TODO there might be a bug here, comeback later
@@ -385,6 +385,7 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
           
           // Either add or diagonal or stop addng them
           if (addDiagonal) {
+            // TODO comment is wrong here (or the code is)  figure out the issue
             // Add the diagonal b -> p, remove a from the Relfex Chain
             diagonals.add(new Line(a, p));
             reflexChain.pop();
@@ -407,7 +408,7 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
     // TODO stepthrough code
 
     // Move to the next point
-    lastSide = side;
+    prevSide = side;
     side = getNextPoint(p, upperChain, lowerChain);
   }
 
