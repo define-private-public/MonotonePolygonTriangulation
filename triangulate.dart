@@ -160,8 +160,8 @@ void drawScene() {
 
     // Debug info
     if (triangulating) {
-      print('Upper Chain: ' + upperChain.toString());
-      print('Lower Chain: ' + lowerChain.toString());
+//      print('Upper Chain: ' + upperChain.toString());
+//      print('Lower Chain: ' + lowerChain.toString());
 
       // Draw the chains
       for (Point p in upperChain)

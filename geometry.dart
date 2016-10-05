@@ -362,6 +362,7 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
 
       // If we're from the upper chain, look for a negative determinant for case a
       // If the reflex is on the lower, we want a positive determinant for case a
+      // TODO what if determinant is 0?
       if ((side == FromChain.Upper) && (d < 0))
         caseA = true;
       else if ((side == FromChain.Lower) && (d > 0))
@@ -378,6 +379,7 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
 
           // Choose where to add the diagonal
           bool addDiagonal = false;
+          // TODO what if determinant is 0?
           if ((side == FromChain.Upper) && (d < 0))
             addDiagonal = true;
           else if ((side == FromChain.Lower) && (d > 0))
@@ -387,7 +389,7 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
           if (addDiagonal) {
             // TODO comment is wrong here (or the code is)  figure out the issue
             // Add the diagonal b -> p, remove a from the Relfex Chain
-            diagonals.add(new LineSegment(a, p));
+            diagonals.add(new LineSegment(b, p));
             reflexChain.pop();
 
             // Add evertying but the last Point
