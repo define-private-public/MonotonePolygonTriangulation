@@ -325,31 +325,35 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
   FromChain prevSide = side;
   side = getNextPoint(p, upperChain, lowerChain);
   while (side != FromChain.None) {
-    // Case 1, p is on the opposite side of the Chain
+    if (side != lastSide) {
+      // Case 1, p is on the opposite side of the Reflex Chain
 
-    // Get the first Point off, it will be our new 'u'
-    bool gotFirst = false;
-    Point u;
+      // Get the first Point off, it will be our new 'u'
+      bool gotFirst = false;
+      Point u;
 
-    // Make the diagonals to all of the Points on the Relfex Chain, except for the last one
-    // TODO refactor this blow, it's kind of bad
-    while(relfexChain.size() > 1) {
-      // Pop from stack & make a diagonal
-      Point v = reflexChain.pop();
-      diagonals.add(new LineSegment(v, p));
+      // Make the diagonals to all of the Points on the Relfex Chain, except for the last one
+      // TODO refactor this blow, it's kind of bad
+      while(relfexChain.size() > 1) {
+        // Pop from stack & make a diagonal
+        Point v = reflexChain.pop();
+        diagonals.add(new LineSegment(v, p));
 
-      if (!gotFirst) {
-        u = v;
-        gotFirst = true;
+        if (!gotFirst) {
+          u = v;
+          gotFirst = true;
+        }
       }
+
+      // Ignore the last one
+      reflexChain.pop();
+
+      // The first point and the last are now on the Relfex Chain
+      relfexChain.push(u);
+      relfexChain.push(p);
+    } else {
+      // Case 2, p is on the same side of the Reflex Chain
     }
-
-    // Ignore the last one
-    reflexChain.pop();
-
-    // The first point and the last are now on the Relfex Chain
-    relfexChain.push(u);
-    relfexChain.push(p);
   }
 
 
