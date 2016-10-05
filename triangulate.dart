@@ -73,6 +73,14 @@ DivElement case2bDiv = querySelector('#case-two-b');
 
 /*== Functions ==*/
 
+// Turns on/off the Triangulate button depending upon the state of the polygon
+void checkEnableTriangulateToggle() {
+  // Need at least four points to triangulate
+  triangulateToggle.disabled = (masterPolygon.length <= 3);
+
+  // TODO check for monotinicy as well?
+}
+
 
 // Draws a Line Segment
 //   ctx -- a CanvasRenderingContext2D
@@ -210,9 +218,30 @@ void onLeftClick(MouseEvent e) {
   // On Left press, add a Point
   if ((e.button == 0) && !triangulating)
     masterPolygon.add(new Point(e.offset.x, e.offset.y));
+
+  // Make sure we have enough points
+  checkEnableTriangulateToggle();
   
   // redraw the scene
   drawScene();
+}
+
+
+// For the Canvas, if there is a Right-Click, it will remove a Point from the polygon
+void onRightClick(MouseEvent e) {
+  // Need to prevent the context menu poping up
+  e.preventDefault();
+
+  // Only remove when not triangulating
+  if (!triangulating && (masterPolygon.length != 0)) {
+    // Pop the most recent
+    masterPolygon.removeLast();
+
+    // Make sure we have enough points
+   checkEnableTriangulateToggle();
+
+    drawScene();
+  }
 }
 
 
@@ -235,19 +264,6 @@ void onMouseMove(MouseEvent e) {
 // This is so we don't have any left-over preview lines
 void onMouseOut(var _) =>
   drawScene();
-
-
-// For the Canvas, if there is a Right-Click, it will remove a Point from the polygon
-void onRightClick(MouseEvent e) {
-  // Need to prevent the context menu poping up
-  e.preventDefault();
-
-  // Only remove when not triangulating
-  if (!triangulating && (masterPolygon.length != 0)) {
-    masterPolygon.removeLast();
-    drawScene();
-  }
-}
 
 
 // For the Triangulate button, when it's clicked

@@ -52,16 +52,17 @@
 
           <p>Use the Left Mouse Button to add Points to the Polygon.  Right Click to remove the last added Point.</p>
           <p>If the Polygon turns red, that means that it isn't X Monotone and will not triangulate.</p>
+          <p>At least four Points are needed to Triangulate.</p>
 
-          <button id="triangulate">Triangulate [Off]</button><br>
+          <button id="triangulate" disabled>Triangulate [Off]</button><br>
           <button id="step-through-toggle">Step Through [Off]</button><br>
           <button id="step" disabled>Step</button><br>
 
           <!-- horizontal spacer -->
+          <!--
           <div style="height: 24px;">&nbsp;</div>
 
           <h2 class="mini-header">Info:</h2>
-          <!--
           <div id="info_side"></div>
           <div id="info_p"></div>
           <div id="info_reflex_chain"></div>
