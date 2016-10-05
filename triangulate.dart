@@ -181,6 +181,12 @@ void main() {
   masterPolygon.add(new Point(220, 240));
 
   getUpperAndLowerChains(masterPolygon, upperChain, lowerChain);
+
+  // Have to do a swap becuase Canvas is an upside down cartesian graph
+  List<Point> swap = upperChain;
+  upperChain = lowerChain;
+  lowerChain = swap;
+
   print('UC: ' + upperChain.toString());
   print('LC: ' + lowerChain.toString());
 
