@@ -23,8 +23,7 @@ enum AlgorithmCase {
 bool stepThroughMode = false;
 bool triangulating = false;
 List<Point> masterPolygon = [];
-//List<Point> lowerChain = [];
-//List<Point> upperChain = [];
+int stepNumber = 0;
 
 
 /*== Functions ==*/
@@ -53,6 +52,7 @@ const String stepThroughToggleOffText = 'Step Through [Off]';
 const String stepThroughToggleOnText = 'Step Through [On]';
 const String triangulateToggleOffText = 'Triangulate [Off]';
 const String triangulateToggleOnText = 'Triangulate [On]';
+const String stepButtonText = 'Step';
 
 
 // Interactive HTML section
@@ -186,8 +186,8 @@ void drawScene() {
     List<LineSegment> diagonals = getDiagonals(masterPolygon);
     print(diagonals);
 
-    for (LineSegment l in diagonals)
-      drawLineSegment(canvasCtx, l, monotoneLineClr); 
+//    for (LineSegment l in diagonals)
+//      drawLineSegment(canvasCtx, l, monotoneLineClr); 
   }
 }
 
@@ -256,12 +256,45 @@ void onTriangulateToggled(var _) {
   // Toggle the triangulation state
   triangulating = !triangulating;
 
+  // init the step through number
+  stepNumber = triangulating ? 1 : 0;
+
   // draw the scene
   drawScene();
 
-  // Set HTML & CSS
+  // Set HTML & CSS for the button
   triangulateToggle.text = triangulating ? triangulateToggleOnText : triangulateToggleOffText;
   triangulateToggle.classes.toggle('toggle-on', triangulating);
+
+  // Enable/Disable the Step-Through button if we're triangulating
+  stepThroughToggle.disabled = triangulating;
+
+  // Turn on the Step button if we're in step through mode
+  if (triangulating && stepThroughMode) {
+    stepButton.disabled = false;
+    stepButton.text = stepButtonText + ' [$stepNumber]';
+  } else {
+    // It's not going to do anything
+    stepButton.disabled = true;
+    stepButton.text = stepButtonText;
+  }
+}
+
+
+// For when the Step button is clicked
+// This will increment the step count
+void onStepButtonClicked(var _) {
+  // Do nothing if we're not triangulationg (or done)
+  if (!triangulating || (stepNumber == 0))
+    return;
+
+  // Increment the step
+  stepNumber++;
+  
+  // Update HTML
+  stepButton.text = stepButtonText + ' [$stepNumber]';
+
+  drawScene();
 }
 
 
@@ -277,6 +310,7 @@ void main() {
   // Attach event handlers for the control buttons
   stepThroughToggle.onClick.listen(onStepThroughToggled);
   triangulateToggle.onClick.listen(onTriangulateToggled);
+  stepButton.onClick.listen(onStepButtonClicked);
 
   // Attach event handlers for the Canvas
   canvas.onClick.listen(onLeftClick);
