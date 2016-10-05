@@ -2,6 +2,7 @@
 library triangulate;
 
 import 'dart:html';
+import 'dart:math';
 import 'stack.dart';
 import 'merge-sort.dart';
 import 'geometry.dart';
@@ -37,8 +38,8 @@ String rgb(int r, int g, int b) =>
 String backgroundClr = rgb(0, 46, 76);
 String monotoneLineClr = rgb(153, 214, 255);
 String nonMonotoneLineClr = rgb(255, 51, 51);
-String upperChainPointClr = rgb(0, 0xFF, 0);
-String lowerChainPointClr = rgb(0, 0, 0xFF);
+String upperChainPointClr = rgb(213, 21, 235);
+String lowerChainPointClr = rgb(21, 235, 25);
 String reflexChainClr = rgb(0xFF, 0, 0);
 String currentLineClr = rgb(0xFF, 0x00, 0x00);
 const num lineWidth = 1.5;
@@ -114,9 +115,39 @@ void drawPolygon(CanvasRenderingContext2D ctx, List<Point> polygon, String clr) 
 }
 
 
+// Draws a single Point
+// TODO document better
+void drawPoint(CanvasRenderingContext2D ctx, Point p, String clr, [bool outline=true , num radius=5]) {
+  // Make sure we've got something to draw
+  if (radius < 0)
+    return;
+
+  if (outline) {
+    // Outline draw
+    ctx..beginPath()
+       ..strokeStyle = clr 
+       ..arc(p.x, p.y, radius, 0, PI * 2)
+       ..closePath()
+       ..stroke();
+  } else {
+    // Fill draw
+    ctx..beginPath()
+       ..fillStyle = clr 
+       ..arc(p.x, p.y, radius, 0, PI * 2)
+       ..closePath()
+       ..fill();
+  }
+
+}
+
+
 // The main drawing function of the program
 // It has some non-drawing logic though...
 void drawScene() {
+  // Fill the background
+  canvasCtx..fillStyle = backgroundClr
+           ..fillRect(0, 0, canvas.width, canvas.height);
+
   String polygonClr = monotoneLineClr;
 
   // Get the chains, Have to do a swap becuase Canvas is an upside down cartesian graph
@@ -127,16 +158,24 @@ void drawScene() {
     // Check if polygon is monotone
     bool isMonotone = isChainXMonotone(upperChain) && isChainXMonotone(lowerChain);
 
+    // Debug info
+    if (triangulating) {
+      print('Upper Chain: ' + upperChain.toString());
+      print('Lower Chain: ' + lowerChain.toString());
+
+      // Draw the chains
+      for (Point p in upperChain)
+        drawPoint(canvasCtx, p, upperChainPointClr, false);
+      for (Point p in lowerChain)
+        drawPoint(canvasCtx, p, lowerChainPointClr);
+    }
+
     // Pop off the first and last parts of the lower chain (no duplicates)
     lowerChain.removeAt(0);
     lowerChain.removeLast();
 
     polygonClr = isMonotone ? monotoneLineClr : nonMonotoneLineClr;
   }
-
-  // Fill the background
-  canvasCtx..fillStyle = backgroundClr
-           ..fillRect(0, 0, canvas.width, canvas.height);
 
   // Draw the master polygon
   drawPolygon(canvasCtx, masterPolygon, polygonClr);
