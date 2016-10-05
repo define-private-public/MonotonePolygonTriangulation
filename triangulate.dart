@@ -117,23 +117,28 @@ void drawPolygon(CanvasRenderingContext2D ctx, List<Point> polygon, String clr) 
 // The main drawing function of the program
 // It has some non-drawing logic though...
 void drawScene() {
+  String polygonClr = monotoneLineClr;
+
   // Get the chains, Have to do a swap becuase Canvas is an upside down cartesian graph
   List<Point> upperChain = [], lowerChain = [];
-  getUpperAndLowerChains(masterPolygon, lowerChain, upperChain);
+  bool gotChains = getUpperAndLowerChains(masterPolygon, lowerChain, upperChain);
 
   // Pop off the first and last parts of the lower chain (no duplicates)
-  lowerChain.removeAt(0);
-  lowerChain.removeLast();
+  if (gotChains) {
+    lowerChain.removeAt(0);
+    lowerChain.removeLast();
 
-  // Check if polygon is monotone
-  bool isMonotone = isChainXMonotone(upperChain) && isChainXMonotone(lowerChain);
+    // Check if polygon is monotone
+    bool isMonotone = isChainXMonotone(upperChain) && isChainXMonotone(lowerChain);
+    polygonClr = isMonotone ? monotoneLineClr : nonMonotoneLineClr;
+  }
 
   // Fill the background
   canvasCtx..fillStyle = backgroundClr
            ..fillRect(0, 0, canvas.width, canvas.height);
 
   // Draw the master polygon
-  drawPolygon(canvasCtx, masterPolygon, isMonotone ? monotoneLineClr : nonMonotoneLineClr);
+  drawPolygon(canvasCtx, masterPolygon, polygonClr);
 
   // If triangulating, draw the diagonals
   if (triangulating) {
@@ -145,6 +150,7 @@ void drawScene() {
       drawLineSegment(canvasCtx, l, monotoneLineClr); 
   }
 }
+
 
 
 /*== Event Handlers ==*/
@@ -221,12 +227,12 @@ void onTriangulateToggled(var _) {
 
 void main() {
   // Some testing code for the chains
-  masterPolygon.add(new Point(180, 200));
-  masterPolygon.add(new Point(200, 170));
-  masterPolygon.add(new Point(250, 150));
-  masterPolygon.add(new Point(310, 190));
-  masterPolygon.add(new Point(260, 250));
-  masterPolygon.add(new Point(220, 240));
+//  masterPolygon.add(new Point(180, 200));
+//  masterPolygon.add(new Point(200, 170));
+//  masterPolygon.add(new Point(250, 150));
+//  masterPolygon.add(new Point(310, 190));
+//  masterPolygon.add(new Point(260, 250));
+//  masterPolygon.add(new Point(220, 240));
 
   // Attach event handlers for the control buttons
   stepThroughToggle.onClick.listen(onStepThroughToggled);
