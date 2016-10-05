@@ -333,7 +333,7 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
       Point u;
 
       // Make the diagonals to all of the Points on the Relfex Chain, except for the last one
-      // TODO refactor this blow, it's kind of bad
+      // TODO refactor this below, it's kind of bad
       while(relfexChain.size() > 1) {
         // Pop from stack & make a diagonal
         Point v = reflexChain.pop();
@@ -353,12 +353,66 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
       relfexChain.push(p);
     } else {
       // Case 2, p is on the same side of the Reflex Chain
+      // TODO there might be a bug here, comeback later
+      Point a = reflexChain.peek(0);
+      Point b = reflexChain.peek(1);
+
+      num d = determinant(a, b, p);
+      bool caseA = false;
+
+      // If we're from the upper chain, look for a negative determinant for case a
+      // If the reflex is on the lower, we want a positive determinant for case a
+      if ((side == FromChain.Upper) && (d < 0))
+        caseA = true;
+      else if ((side == FromChain.Lower) && (d > 0))
+        caseA = true;
+
+      if (caseA) {
+        // Case 2a, add diagonals based upon visibility (need at least one)
+        bool done = false;
+
+        while (!done) {
+          a = reflexChain.peek(0);
+          b = reflexChain.peek(1);
+          d = determinant(a, b, p);
+
+          // Choose where to add the diagonal
+          bool addDiagonal = false;
+          if ((side == FromChain.Upper) && (d < 0))
+            addDiagonal = true;
+          else if ((side == FromChain.Lower) && (d > 0))
+            addDiagonal = true;
+          
+          // Either add or diagonal or stop addng them
+          if (addDiagonal) {
+            // Add the diagonal b -> p, remove a from the Relfex Chain
+            diagonals.add(new Line(a, p));
+            reflexChain.pop();
+
+            // Add evertying but the last Point
+            if (reflexChain.size() < 2)
+              done = true;
+          } else
+            done = true;
+        }
+
+        // Add p onto the Relfex Chain
+        reflexChain.push(p);
+      } else {
+        // Case 2b, p is not visible to the Relfex Chain, just add it
+        reflexChain.push(p);
+      }
     }
+
+    // TODO stepthrough code
+
+    // Move to the next point
+    lastSide = side;
+    side = getNextPoint(p, upperChain, lowerChain);
   }
 
-
-
-
+  // TODO stepping code
+  return diagonals;
 }
 
 
