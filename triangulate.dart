@@ -102,15 +102,24 @@ void drawPolygon(CanvasRenderingContext2D ctx, List<Point> polygon, String clr) 
 
 
 // The main drawing function of the program
+// It has some non-drawing logic though...
 void drawScene() {
-  // TODO check for monotonicity
+  // Get the chains
+  getUpperAndLowerChains(masterPolygon, upperChain, lowerChain);
+
+  // Have to do a swap becuase Canvas is an upside down cartesian graph
+  List<Point> swap = upperChain;
+  upperChain = lowerChain;
+  lowerChain = swap;
+
+  bool isMonotone = isChainXMonotone(upperChain) && isChainXMonotone(lowerChain);
 
   // Fill the background
   canvasCtx..fillStyle = backgroundClr
            ..fillRect(0, 0, canvas.width, canvas.height);
 
   // Draw the master polygon
-  drawPolygon(canvasCtx, masterPolygon, monotoneLineClr);
+  drawPolygon(canvasCtx, masterPolygon, isMonotone ? monotoneLineClr : nonMonotoneLineClr);
 }
 
 
@@ -179,16 +188,6 @@ void main() {
   masterPolygon.add(new Point(310, 190));
   masterPolygon.add(new Point(260, 250));
   masterPolygon.add(new Point(220, 240));
-
-  getUpperAndLowerChains(masterPolygon, upperChain, lowerChain);
-
-  // Have to do a swap becuase Canvas is an upside down cartesian graph
-  List<Point> swap = upperChain;
-  upperChain = lowerChain;
-  lowerChain = swap;
-
-  print('UC: ' + upperChain.toString());
-  print('LC: ' + lowerChain.toString());
 
   // Attach event handlers for the control buttons
   stepThroughToggle.onClick.listen(onStepThroughToggled);
