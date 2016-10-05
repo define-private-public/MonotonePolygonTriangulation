@@ -190,10 +190,14 @@ bool getUpperAndLowerChains(List<Point> polygon, List<Point> uc, List<Point> lc)
     }
   }
 
-  print(leftmostPoint);
-  print(leftmostIndex);
-  print(rightmostPoint);
-  print(rightmostIndex);
+  // Get the upper chain
+  uc.add(leftmostPoint);
+  uc.add(rightmostPoint);
+
+  // Get the lower chain
+  lc.add(leftmostPoint);
+  lc.add(rightmostPoint);
+
 
   
 
