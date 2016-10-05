@@ -145,7 +145,7 @@ bool isChainXMonotone(List<Point> chain) {
 }
 
 
-// This function will retrive the upper and lower chains of a Polygon
+// This function will retrive the upper and lower chains of a Polygon in O(N) time
 //   polygon - a List of Points that make up a (closed) polygon
 //   uc - a pointer to a List<Point>, will be the upper chain
 //        must be allocated before being passed in
@@ -168,7 +168,34 @@ bool getUpperAndLowerChains(List<Point> polygon, List<Point> uc, List<Point> lc)
   if (polygon.length < 3)
     return false;
 
-  // Need to search through a bit
+  // Need to search through a bit to find the endpoints
+  Point leftmostPoint = new Point(double.INFINITY, 0);
+  Point rightmostPoint = new Point(double.NEGATIVE_INFINITY, 0);
+  int leftmostIndex;
+  int rightmostIndex;
+
+  // Get them O(N)
+  for (int i = 0; i < polygon.length; i++) {
+    Point p = polygon[i];
+
+    // Compares on the X axis (check Point class source)
+    if (p < leftmostPoint) {
+      leftmostPoint.setFrom(p);
+      leftmostIndex = i;
+    }
+
+    if (p > rightmostPoint) {
+      rightmostPoint.setFrom(p);
+      rightmostIndex = i;
+    }
+  }
+
+  print(leftmostPoint);
+  print(leftmostIndex);
+  print(rightmostPoint);
+  print(rightmostIndex);
+
+  
 
   return true;
 }
