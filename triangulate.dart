@@ -181,8 +181,8 @@ void main() {
   masterPolygon.add(new Point(220, 240));
 
   getUpperAndLowerChains(masterPolygon, upperChain, lowerChain);
-  print(upperChain);
-  print(lowerChain);
+  print('UC: ' + upperChain.toString());
+  print('LC: ' + lowerChain.toString());
 
   // Attach event handlers for the control buttons
   stepThroughToggle.onClick.listen(onStepThroughToggled);

@@ -34,6 +34,10 @@ class Point {
     new Point(x, y);
 
 
+  bool equals(Point other) =>
+    (x == other.x) && (y == other.y);
+
+
   // Only checks for equality on the X axis
   @override
   bool operator ==(Point other) =>
@@ -64,12 +68,12 @@ class LineSegment {
   Point a;
   Point b;
 
-  // TODO test if this is making a copy or its own thing
+  // Creates a LingSegment by copying the two point values
   LineSegment (Point a_, Point b_) :
     a = a_.copy(),
     b = b_.copy();
 
-  // TODO test if this is making a copy or its own thing
+  // Creates a deep copy of the LineSegment
   LineSegment copy() =>
     new LineSegment(a, b);
 
@@ -191,15 +195,39 @@ bool getUpperAndLowerChains(List<Point> polygon, List<Point> uc, List<Point> lc)
   }
 
   // Get the upper chain
-  uc.add(leftmostPoint);
-  uc.add(rightmostPoint);
+  // Find which direciton to travel in
+  Point next = polygon[(leftmostIndex + 1) % polygon.length];
+  Point prev = polygon[(leftmostIndex - 1) % polygon.length];
 
-  // Get the lower chain
-  lc.add(leftmostPoint);
-  lc.add(rightmostPoint);
+  int dir = 0;
+  if (next.y > prev.y)
+    dir = 1;
+  else
+    dir = -1;
 
+  // An anonymouse function that will populate a chain from left to right
+  // with a directoin
+  var mkChain = (chain, direction) {
+    // Loop until we hit the rightmost Point
+    bool done = false;
+    int cursor = leftmostIndex;
+    while (!done) {
+      // Next point
+      Point p = polygon[cursor % polygon.length];
+      cursor += direction;
 
-  
+      // Add to chain
+      chain.add(p);
+
+      // Check if we've reached the end
+      if (p.equals(rightmostPoint))
+        done = true;
+    }
+  };
+
+  // Makes the chains
+  mkChain(uc, dir);
+  mkChain(lc, -1 * dir);
 
   return true;
 }
