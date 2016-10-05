@@ -315,11 +315,11 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
   // First Point
   Point p = new Point(0, 0);
   FromChain side = getNextPoint(p, upperChain, lowerChain);
-  reflexChain.push(p);
+  reflexChain.push(p.copy());
 
   // Second point
   side = getNextPoint(p, upperChain, lowerChain);
-  reflexChain.push(p);
+  reflexChain.push(p.copy());
 
   // Loop through creating the diagonals, peel of each Point
   FromChain prevSide = side;
@@ -340,7 +340,7 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
         diagonals.add(new LineSegment(v, p));
 
         if (!gotFirst) {
-          u = v;
+          u = v.copy();
           gotFirst = true;
         }
       }
@@ -349,8 +349,8 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
       reflexChain.pop();
 
       // The first point and the last are now on the Relfex Chain
-      reflexChain.push(u);
-      reflexChain.push(p);
+      reflexChain.push(u.copy());
+      reflexChain.push(p.copy());
     } else {
       // Case 2, p is on the same side of the Reflex Chain
       // TODO there might be a bug here, comeback later
@@ -398,10 +398,10 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
         }
 
         // Add p onto the Relfex Chain
-        reflexChain.push(p);
+        reflexChain.push(p.copy());
       } else {
         // Case 2b, p is not visible to the Relfex Chain, just add it
-        reflexChain.push(p);
+        reflexChain.push(p.copy());
       }
     }
 
