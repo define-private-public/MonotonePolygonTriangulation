@@ -172,6 +172,18 @@ void onRightClick(MouseEvent e) {
 
 
 void main() {
+  // Some testing code for the chains
+  masterPolygon.add(new Point(180, 200));
+  masterPolygon.add(new Point(200, 170));
+  masterPolygon.add(new Point(250, 150));
+  masterPolygon.add(new Point(310, 190));
+  masterPolygon.add(new Point(260, 250));
+  masterPolygon.add(new Point(220, 240));
+
+  getUpperAndLowerChains(masterPolygon, upperChain, lowerChain);
+  print(upperChain);
+  print(lowerChain);
+
   // Attach event handlers for the control buttons
   stepThroughToggle.onClick.listen(onStepThroughToggled);
 
@@ -183,10 +195,5 @@ void main() {
 
   // Draw the scene
   drawScene();
-
-  // Some testing code for the chains
-  getUpperAndLowerChains(masterPolygon, upperChain, lowerChain);
-  print(upperChain);
-  print(lowerChain);
 }
 
