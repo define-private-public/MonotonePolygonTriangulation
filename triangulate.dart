@@ -23,7 +23,7 @@ enum AlgorithmCase {
 bool stepThroughMode = false;
 bool triangulating = false;
 List<Point> masterPolygon = [];
-int stepNumber = 0;
+int stepNumber = -1;
 
 
 /*== Functions ==*/
@@ -53,6 +53,8 @@ const String stepThroughToggleOnText = 'Step Through [On]';
 const String triangulateToggleOffText = 'Triangulate [Off]';
 const String triangulateToggleOnText = 'Triangulate [On]';
 const String stepButtonText = 'Step';
+const String stepButtonStartText = 'Start Stepping';
+const String stepButtonDoneText = 'Done Stepping';
 
 
 // Interactive HTML section
@@ -273,7 +275,7 @@ void onTriangulateToggled(var _) {
   triangulating = !triangulating;
 
   // init the step through number
-  stepNumber = triangulating ? 1 : 0;
+  stepNumber = triangulating ? 0 : -1;
 
   // draw the scene
   drawScene();
@@ -288,7 +290,7 @@ void onTriangulateToggled(var _) {
   // Turn on the Step button if we're in step through mode
   if (triangulating && stepThroughMode) {
     stepButton.disabled = false;
-    stepButton.text = stepButtonText + ' [$stepNumber]';
+    stepButton.text = stepButtonStartText;
   } else {
     // It's not going to do anything
     stepButton.disabled = true;
@@ -301,14 +303,18 @@ void onTriangulateToggled(var _) {
 // This will increment the step count
 void onStepButtonClicked(var _) {
   // Do nothing if we're not triangulationg (or done)
-  if (!triangulating || (stepNumber == 0))
+  if (!triangulating || (stepNumber == -1))
     return;
 
   // Increment the step
   stepNumber++;
-  
-  // Update HTML
-  stepButton.text = stepButtonText + ' [$stepNumber]';
+
+  // Check if we've stepped enough
+  if (stepNumber > masterPolygon.length) {
+    stepButton.disabled = true;
+    stepButton.text = stepButtonDoneText;
+  } else
+    stepButton.text = stepButtonText + ' [$stepNumber]';
 
   drawScene();
 }
