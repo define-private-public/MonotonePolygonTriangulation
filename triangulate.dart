@@ -123,13 +123,14 @@ void drawScene() {
   List<Point> upperChain = [], lowerChain = [];
   bool gotChains = getUpperAndLowerChains(masterPolygon, lowerChain, upperChain);
 
-  // Pop off the first and last parts of the lower chain (no duplicates)
   if (gotChains) {
+    // Check if polygon is monotone
+    bool isMonotone = isChainXMonotone(upperChain) && isChainXMonotone(lowerChain);
+
+    // Pop off the first and last parts of the lower chain (no duplicates)
     lowerChain.removeAt(0);
     lowerChain.removeLast();
 
-    // Check if polygon is monotone
-    bool isMonotone = isChainXMonotone(upperChain) && isChainXMonotone(lowerChain);
     polygonClr = isMonotone ? monotoneLineClr : nonMonotoneLineClr;
   }
 
