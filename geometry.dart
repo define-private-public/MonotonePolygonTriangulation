@@ -370,7 +370,7 @@ List<LineSegment> getDiagonals(List<Point> polygon, [int maxSteps=0, Stack<Point
       }
 
       // Store the topmost point on the chain
-      Point topmost = reflexChain.pop();
+      Point topmost = reflexChain.peek(0).copy();
 
       // Make the diagonals to all of the Points on the Relfex Chain, except for the last one
       while(reflexChain.size() > 1) {

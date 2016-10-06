@@ -39,7 +39,7 @@ String monotoneLineClr = rgb(153, 214, 255);
 String nonMonotoneLineClr = rgb(255, 51, 51);
 String upperChainPointClr = rgb(213, 21, 235);
 String lowerChainPointClr = rgb(21, 235, 25);
-String reflexChainClr = rgb(0xFF, 0, 0);
+String reflexChainClr = rgb(244, 142, 0);
 String currentLineClr = rgb(0xFF, 0x00, 0x00);
 const num lineWidth = 1.5;
 
@@ -203,7 +203,7 @@ void drawScene() {
 
     // Draw the reflex Chain
     for (Point p in rc.getIter())
-      drawPoint(canvasCtx, p, reflexChainClr, true);
+      drawPoint(canvasCtx, p, reflexChainClr, true, 3);
 
     // Draw step line
     if (stepThroughMode && (stepNumber > 0) && (stepNumber <= masterPolygon.length)) {
