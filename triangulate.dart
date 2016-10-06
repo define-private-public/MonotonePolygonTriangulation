@@ -37,10 +37,10 @@ String rgb(int r, int g, int b) =>
 String backgroundClr = rgb(0, 46, 76);
 String monotoneLineClr = rgb(153, 214, 255);
 String nonMonotoneLineClr = rgb(255, 51, 51);
-String upperChainPointClr = rgb(195, 0, 255);
+String upperChainPointClr = rgb(255, 89, 255);
 String lowerChainPointClr = rgb(35, 255, 39);
-String reflexChainClr = monotoneLineClr;
-String currentLineClr = rgb(0xFF, 0x00, 0x00);
+String reflexChainClr = rgb(220, 0, 0);
+String currentLineClr = rgb(220, 0, 0);
 const num lineWidth = 1.5;
 
 // Algorithm Case colors
@@ -127,7 +127,7 @@ void drawPolygon(CanvasRenderingContext2D ctx, List<Point> polygon, String clr) 
 
 // Draws a single Point
 // TODO document better
-void drawPoint(CanvasRenderingContext2D ctx, Point p, String clr, [bool fill=false, num radius=5]) {
+void drawPoint(CanvasRenderingContext2D ctx, Point p, String clr, [bool fill=false, num radius=7]) {
   // Make sure we've got something to draw
   if (radius < 0)
     return;
