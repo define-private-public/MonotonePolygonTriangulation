@@ -190,9 +190,6 @@ void drawScene() {
       drawLineSegment(canvasCtx, l, monotoneLineClr); 
 
     if (stepThroughMode) {
-      // Draw the reflex Chain
-      for (Point p in rc.getIter())
-        drawPoint(canvasCtx, p, reflexChainClr, true);
 
       // Draw the Upper & Lower Chains
       for (Point p in upperChain)
@@ -200,8 +197,13 @@ void drawScene() {
       for (Point p in lowerChain)
         drawPoint(canvasCtx, p, lowerChainPointClr);
 
-      // Draw step line
+      // Draw step line and Reflex Chain while stepping
       if ((stepNumber > 0) && (stepNumber <= masterPolygon.length)) {
+        // Reflex Chain
+        for (Point p in rc.getIter())
+          drawPoint(canvasCtx, p, reflexChainClr, true);
+
+        // Line
         Point p = getPointAtProcessingIndex(masterPolygon, (stepNumber - 1));
         if (p != null) {
           LineSegment l = new LineSegment(
