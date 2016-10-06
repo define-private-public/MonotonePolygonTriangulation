@@ -50,6 +50,7 @@ const String stepButtonDoneText = 'Done Stepping';
 // Interactive HTML section
 CanvasElement canvas = querySelector('#polygon-canvas');
 CanvasRenderingContext2D canvasCtx = canvas.context2D;
+ButtonElement clearButton = querySelector('#clear');
 ButtonElement triangulateToggle = querySelector('#triangulate-toggle');
 ButtonElement stepThroughToggle = querySelector('#step-through-toggle');
 ButtonElement stepButton = querySelector('#step');
@@ -65,11 +66,16 @@ DivElement case2bDiv = querySelector('#case-two-b');
 /*== Functions ==*/
 
 // Turns on/off the Triangulate button depending upon the state of the polygon
-void checkEnableTriangulateToggle() {
+// Also enables/disables the Clear button
+void onPolygonChanged() {
+  // Need at least one point to clear out
+  clearButton.disabled = (masterPolygon.length < 1);
+
   // Need at least four points to triangulate
   triangulateToggle.disabled = (masterPolygon.length <= 3);
 
   // TODO check for monotinicy as well?
+  // TODO check for simplicity
 }
 
 
@@ -213,6 +219,16 @@ void drawScene() {
 
 
 /*== Event Handlers ==*/
+// For when the clear button is pressed, cleans out the Polygon
+void onClearButtonClicked(var _) {
+  // Alter the polygon
+  masterPolygon.clear();
+  onPolygonChanged();
+
+  // Redraw
+  drawScene();
+}
+
 // For the stepThrough toggle button, Will toggle on/off "step through" mode
 void onStepThroughToggled(var _) {
   // Toggle step through mode
@@ -234,7 +250,7 @@ void onLeftClick(MouseEvent e) {
     masterPolygon.add(new Point(e.offset.x, e.offset.y));
 
   // Make sure we have enough points
-  checkEnableTriangulateToggle();
+  onPolygonChanged();
   
   // redraw the scene
   drawScene();
@@ -252,7 +268,7 @@ void onRightClick(MouseEvent e) {
     masterPolygon.removeLast();
 
     // Make sure we have enough points
-   checkEnableTriangulateToggle();
+   onPolygonChanged();
 
     drawScene();
   }
@@ -296,8 +312,9 @@ void onTriangulateToggled(var _) {
   triangulateToggle.text = triangulating ? triangulateToggleOnText : triangulateToggleOffText;
   triangulateToggle.classes.toggle('toggle-on', triangulating);
 
-  // Enable/Disable the Step-Through button if we're triangulating
+  // Enable/Disable other button presses
   stepThroughToggle.disabled = triangulating;
+  clearButton.disabled = triangulating;
 
   // Turn on the Step button if we're in step through mode
   if (triangulating && stepThroughMode) {
@@ -333,15 +350,8 @@ void onStepButtonClicked(var _) {
 
 
 void main() {
-  // Some testing code for the chains
-//  masterPolygon.add(new Point(180, 200));
-//  masterPolygon.add(new Point(200, 170));
-//  masterPolygon.add(new Point(250, 150));
-//  masterPolygon.add(new Point(310, 190));
-//  masterPolygon.add(new Point(260, 250));
-//  masterPolygon.add(new Point(220, 240));
-
   // Attach event handlers for the control buttons
+  clearButton.onClick.listen(onClearButtonClicked);
   stepThroughToggle.onClick.listen(onStepThroughToggled);
   triangulateToggle.onClick.listen(onTriangulateToggled);
   stepButton.onClick.listen(onStepButtonClicked);
@@ -354,7 +364,5 @@ void main() {
 
   // Draw the scene
   drawScene();
-
-//  print(getNextPoint(new Point(0, 0), [], []));
 }
 

@@ -16,6 +16,10 @@ enum AlgorithmCase {
   TwoA,
   TwoB
 }
+const int CASE_INVALID = 0;
+const int CASE_ONE = 1;
+const int CASE_TWO_A = 2;
+const int CASE_TWO_B = 3;
 
 // Used when pulling off points from the chains
 enum FromChain {
@@ -398,13 +402,6 @@ List<LineSegment> getDiagonals(
     else
       step++;
 
-    // The caller wants to know what the reflex chain is
-    // This is not part of the algorithm
-    if (outReflexChain != null) {
-      outReflexChain.clear();
-      outReflexChain.setFrom(reflexChain);
-    }
-
     if (pSide != prevPSide) {
       // Case 1: p (a.k.a v_i) is on the opposite side of the Reflex Chain
       //         add diagonals for all points on the reflex chain except for the last one
@@ -482,6 +479,13 @@ List<LineSegment> getDiagonals(
         lastCase = AlgorithmCase.TwoB;
         reflexChain.push(p.copy());
       }
+    }
+
+    // The caller wants to know what the reflex chain is
+    // This is not part of the algorithm
+    if (outReflexChain != null) {
+      outReflexChain.clear();
+      outReflexChain.setFrom(reflexChain);
     }
 
     // Move to the next point
