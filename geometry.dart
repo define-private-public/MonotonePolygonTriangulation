@@ -325,7 +325,14 @@ Point getPointAtProcessingIndex(List<Point> polygon, int index) {
 // Returns a List of LineSegments, that are the diagonals that create the
 // triangulated Polygon.
 // TODO redocument
-List<LineSegment> getDiagonals(List<Point> polygon, [int maxSteps=0, Stack<Point> outReflexChain=null]) {
+List<LineSegment> getDiagonals(
+  List<Point> polygon,
+  [
+    int maxSteps=0,
+    Stack<Point> outReflexChain=null,
+    AlgorithmCase lastCase=AlgorithmCase.Invalid
+  ]
+) {
   List<LineSegment> diagonals = [];
   int step = 0;
 
@@ -371,6 +378,7 @@ List<LineSegment> getDiagonals(List<Point> polygon, [int maxSteps=0, Stack<Point
     if (pSide != prevPSide) {
       // Case 1: p (a.k.a v_i) is on the opposite side of the Reflex Chain
       //         add diagonals for all points on the reflex chain except for the last one
+      lastCase = AlgorithmCase.One;
 
       // Store the topmost point on the chain
       Point topmost = reflexChain.peek(0).copy();
@@ -407,8 +415,10 @@ List<LineSegment> getDiagonals(List<Point> polygon, [int maxSteps=0, Stack<Point
 
       if (caseA) {
         // Case 2a: p is visible to part of the Relfex Chain
-        bool done = false;
+        lastCase = AlgorithmCase.TwoA;
 
+        // Keep going until we're not visible anymore
+        bool done = false;
         while (!done) {
           bool addDiagonal = false;
           b = reflexChain.peek(0);
@@ -439,6 +449,7 @@ List<LineSegment> getDiagonals(List<Point> polygon, [int maxSteps=0, Stack<Point
         reflexChain.push(p.copy());
       } else {
         // Case 2b: p is not visible to the Relfex Chain, just add it
+        lastCase = AlgorithmCase.TwoB;
         reflexChain.push(p.copy());
       }
     }

@@ -173,7 +173,8 @@ void drawScene() {
   if (triangulating) {
     // Get them
     Stack<Point> rc = new Stack<Point>();
-    List<LineSegment> diagonals = getDiagonals(masterPolygon, stepNumber, rc);
+    AlgorithmCase ac = AlgorithmCase.Invalid;
+    List<LineSegment> diagonals = getDiagonals(masterPolygon, stepNumber, rc, ac);
 
     // Draw the lines
     for (LineSegment l in diagonals)
@@ -202,6 +203,8 @@ void drawScene() {
           );
           drawLineSegment(canvasCtx, l, currentLineClr);
         }
+
+        print(ac);
       }
     }
   }
