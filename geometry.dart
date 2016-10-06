@@ -321,6 +321,8 @@ Point getPointAtProcessingIndex(List<Point> polygon, int index) {
 
 // Does the Triangulation of the Polygon
 //   polygon -- a List of Points that is an X Monotone polygon
+//   maxSteps -- If set to 0, it will run the complete algorithm (default)
+//               If set to a positive value, it will run that many steps (at least)`
 //
 // Returns a List of LineSegments, that are the diagonals that create the
 // triangulated Polygon.
@@ -355,21 +357,49 @@ List<LineSegment> getDiagonals(
   FromChain pSide = getNextPoint(p, upperChain, lowerChain);
   reflexChain.push(p.copy());
 
+  // This code here is used for step through info, disregard it if you're
+  // only intersted in the algorithm
+  step++;
+  if ((maxSteps != 0) && (step >= maxSteps)) {
+    // The caller wants to know what the reflex chain is
+    if (outReflexChain != null) {
+      outReflexChain.clear();
+      outReflexChain.setFrom(reflexChain);
+    }
+
+    return diagonals;
+  }
+
   // Second point
   pSide = getNextPoint(p, upperChain, lowerChain);
   reflexChain.push(p.copy());
+
+  // This code here is used for step through info, disregard it if you're
+  // only intersted in the algorithm
+  step++;
+  if ((maxSteps != 0) && (step >= maxSteps)) {
+    // The caller wants to know what the reflex chain is
+    if (outReflexChain != null) {
+      outReflexChain.clear();
+      outReflexChain.setFrom(reflexChain);
+    }
+
+    return diagonals;
+  }
 
   // Loop through creating the diagonals, peel of each Point
   FromChain prevPSide = pSide;
   pSide = getNextPoint(p, upperChain, lowerChain);
   while (pSide != FromChain.None) {
     // If stepping, check to see if we've done enough steps
+    // This is not part of the algorithm
     if ((maxSteps > 0) && (step >= maxSteps))
       break;
     else
       step++;
 
     // The caller wants to know what the reflex chain is
+    // This is not part of the algorithm
     if (outReflexChain != null) {
       outReflexChain.clear();
       outReflexChain.setFrom(reflexChain);
