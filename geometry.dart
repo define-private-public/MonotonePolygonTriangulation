@@ -338,75 +338,69 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
   // Put the first two points onto the reflex chain
   // First Point
   Point p = new Point(0, 0);
-  FromChain side = getNextPoint(p, upperChain, lowerChain);
+  FromChain pSide = getNextPoint(p, upperChain, lowerChain);
   reflexChain.push(p.copy());
 
   // Second point
-  side = getNextPoint(p, upperChain, lowerChain);
-  reflexChain.push(p.copy());
+  pSide = getNextPoint(p, upperChain, lowerChain);
 
   // Loop through creating the diagonals, peel of each Point
-  FromChain prevSide = side;
-  side = getNextPoint(p, upperChain, lowerChain);
-  while (side != FromChain.None) {
-    if (side != prevSide) {
-      // Case 1, p is on the opposite side of the Reflex Chain
+  FromChain prevPSide = pSide;
+  pSide = getNextPoint(p, upperChain, lowerChain);
+  while (pSide != FromChain.None) {
+    if (pSide != prevPSide) {
+      // Case 1: p (a.k.a v_i) is on the opposite side of the Reflex Chain
+      //         add diagonals for all points on the reflex chain except for the last one
 
-      // Get the first Point off, it will be our new 'u'
-      bool gotFirst = false;
-      Point u;
+      // Store the topmost point on the chain
+      Point topmost = reflexChain.pop();
 
       // Make the diagonals to all of the Points on the Relfex Chain, except for the last one
-      // TODO refactor this below, it's kind of bad
       while(reflexChain.size() > 1) {
         // Pop from stack & make a diagonal
         Point v = reflexChain.pop();
         diagonals.add(new LineSegment(v, p));
-
-        if (!gotFirst) {
-          u = v.copy();
-          gotFirst = true;
-        }
       }
 
-      // Ignore the last one
+      // Ignore the last Point
       reflexChain.pop();
 
-      // The first point and the last are now on the Relfex Chain
-      reflexChain.push(u.copy());
+      // The topmost and p and put onto the relfex chain
+      reflexChain.push(topmost.copy());
       reflexChain.push(p.copy());
     } else {
       // Case 2, p is on the same side of the Reflex Chain
       // TODO there might be a bug here, comeback later
-      Point a = reflexChain.peek(0);
-      Point b = reflexChain.peek(1);
+      Point b = reflexChain.peek(0);
+      Point a = reflexChain.peek(1);
 
       num d = determinant(a, b, p);
       bool caseA = false;
 
-      // If we're from the upper chain, look for a negative determinant for case a
-      // If the reflex is on the lower, we want a positive determinant for case a
-      // TODO what if determinant is 0?
-      if ((side == FromChain.Upper) && (d < 0))
+      // If we're from the upper chain, look for a determinant for case 2a (visible)
+      // If the reflex is on the lower, we want a positive determinant for case 2a (visible)
+      if ((pSide == FromChain.Upper) && (d < 0))
         caseA = true;
-      else if ((side == FromChain.Lower) && (d > 0))
+      else if ((pSide == FromChain.Lower) && (d > 0))
         caseA = true;
 
+      // If the determinant is zero, than that means it's not visible, so it's case 2b
+
       if (caseA) {
-        // Case 2a, add diagonals based upon visibility (need at least one)
+        // Case 2a: p is visible to part of the Relfex Chain
         bool done = false;
 
         while (!done) {
-          a = reflexChain.peek(0);
-          b = reflexChain.peek(1);
+          bool addDiagonal = false;
+          b = reflexChain.peek(0);
+          a = reflexChain.peek(1);
           d = determinant(a, b, p);
 
-          // Choose where to add the diagonal
-          bool addDiagonal = false;
-          // TODO what if determinant is 0?
-          if ((side == FromChain.Upper) && (d < 0))
+          // If we're from the upper chain, look for negative for visibility
+          // If the reflex is on the lower, look for positive for visibility
+          if ((pSide == FromChain.Upper) && (d < 0))
             addDiagonal = true;
-          else if ((side == FromChain.Lower) && (d > 0))
+          else if ((pSide == FromChain.Lower) && (d > 0))
             addDiagonal = true;
           
           // Either add or diagonal or stop addng them
@@ -426,7 +420,7 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
         // Add p onto the Relfex Chain
         reflexChain.push(p.copy());
       } else {
-        // Case 2b, p is not visible to the Relfex Chain, just add it
+        // Case 2b: p is not visible to the Relfex Chain, just add it
         reflexChain.push(p.copy());
       }
     }
@@ -434,8 +428,8 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
     // TODO stepthrough code
 
     // Move to the next point
-    prevSide = side;
-    side = getNextPoint(p, upperChain, lowerChain);
+    prevPSide = pSide;
+    pSide = getNextPoint(p, upperChain, lowerChain);
   }
 
   // TODO stepping code

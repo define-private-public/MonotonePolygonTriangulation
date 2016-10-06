@@ -194,7 +194,7 @@ void drawScene() {
   if (triangulating) {
     // Get them
     List<LineSegment> diagonals = getDiagonals(masterPolygon);
-    print(diagonals);
+//    print(diagonals);
 
     for (LineSegment l in diagonals)
       drawLineSegment(canvasCtx, l, monotoneLineClr); 
