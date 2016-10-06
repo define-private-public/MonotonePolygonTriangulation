@@ -37,9 +37,9 @@ String rgb(int r, int g, int b) =>
 String backgroundClr = rgb(0, 46, 76);
 String monotoneLineClr = rgb(153, 214, 255);
 String nonMonotoneLineClr = rgb(255, 51, 51);
-String upperChainPointClr = rgb(213, 21, 235);
-String lowerChainPointClr = rgb(21, 235, 25);
-String reflexChainClr = rgb(244, 142, 0);
+String upperChainPointClr = rgb(195, 0, 255);
+String lowerChainPointClr = rgb(35, 255, 39);
+String reflexChainClr = monotoneLineClr;
 String currentLineClr = rgb(0xFF, 0x00, 0x00);
 const num lineWidth = 1.5;
 
@@ -143,6 +143,7 @@ void drawPoint(CanvasRenderingContext2D ctx, Point p, String clr, [bool fill=fal
     // Outline draw
     ctx..beginPath()
        ..strokeStyle = clr 
+       ..lineWidth = (lineWidth * 1.5)
        ..arc(p.x, p.y, radius, 0, PI * 2)
        ..closePath()
        ..stroke();
@@ -169,6 +170,7 @@ void drawScene() {
     bool isMonotone = isChainXMonotone(upperChain) && isChainXMonotone(lowerChain);
 
     // Pop off the first and last parts of the lower chain (no duplicates)
+    // It doesn't really matter, as long as we don't have dubs
     lowerChain.removeAt(0);
     lowerChain.removeLast();
 
