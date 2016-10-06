@@ -3,6 +3,7 @@
 
 <head>
   <title>Polygon Triangulation</title>
+  <!-- TODO manually incluce necessary CSS from blog -->
   <link rel="stylesheet" type="text/css" href="https://16bpp.net/statics/styles/main.css">
   <style type="text/css">
     .algorithm-case {
@@ -31,6 +32,7 @@
       float: left;
     }
 
+    /*== TODO nicer CSS here ==*/
     button.toggle-on {
       border: 4px solid blue;
     }
@@ -50,18 +52,23 @@
         <div id="control-section">
           <h2 class="mini-header">Controls:</h2>
 
-          <p>Use the Left Mouse Button to add Points to the Polygon.  Right Click to remove the last added Point.</p>
+          <p>Use the Left Mouse Button to add points to the polygon.  Right Click to remove the last added point.</p>
           <p>If the Polygon turns red, that means that it isn't X Monotone and will not triangulate.</p>
-          <p>At least four Points are needed to Triangulate.</p>
+          <p>At least four points are needed to Triangulate.</p>
 
-          <button id="triangulate" disabled>Triangulate [Off]</button><br>
+          <button id="triangulate-toggle" disabled>Triangulate [Off]</button><br>
           <button id="step-through-toggle">Step Through [Off]</button><br>
           <button id="step" disabled>Step</button><br>
         </div>
       </div>
     </div>
 
-    <div id="algorithm" class="algorithm-case">
+    <div id="step-through-mode-info" class="row" style="display: none;">
+      <p>The points with a purple ring around them are part of the Upper Chain, where as the ones with a green ring around them are from the Lower Chain.  If a ring is filled in with red, that means it's part of the Reflex Chain at that step.  The vertical red line marks which point is currently being tested.</p>
+      <p>The boxes below highlight which case of the algorithm the current point is hitting.</p>
+    </div>
+
+    <div id="algorithm" class="algorithm-case row">
       <span style="background: yellow">TODO: rewrite the steps to be a bit more accurate</span>
 
       <h2 class="mini-header">Algorithm:</h2>
@@ -69,10 +76,10 @@
       <div id="step-two">Push the first two points onto the Reflex Chain.</div>
 
       <div id="case-one" class="algorithm-case">
-        <strong>Case 1:</strong> New Point is on a different chain of the Polygon<br />
+        <strong>Case 1:</strong> Current point is on a different chain of the Polygon<br />
         <br />
         Draw a diagonal from each point on the Relfex Chain to the new point.<br />
-        <em>v</em> = last Point on the Relfex Chain<br />
+        <em>v</em> = last point on the Relfex Chain<br />
         Clear the Relfex Chain<br />
         Put <em>v</em> back onto the Relfex Chain<br />
         Put the new point onto the Reflex Chain
@@ -80,7 +87,7 @@
 
       <div id="case-two" class="algoritm-case">
         <div id="case-two-a" class="algorithm-case">
-          <strong>Case 2a:</strong> New Point is visible to some (or all) points on the chain.<br />
+          <strong>Case 2a:</strong> Current point is visible to some (or all) points on the chain.<br />
           <br />
           Draw a diagonal from each point on the Reflex Chain that is visible<br />
           to the new point.<br />
@@ -90,7 +97,7 @@
         </div>
 
         <div id="case-two-b" class="algorithm-case">
-          <strong>Case 2b:</strong> New Point is not visible to any other points on the chain<br />
+          <strong>Case 2b:</strong> Current point is not visible to any other points on the chain<br />
           <br />
           Just add the new point to the Relfex Chain
         </div>

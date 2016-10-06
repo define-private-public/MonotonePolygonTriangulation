@@ -60,12 +60,11 @@ const String stepButtonDoneText = 'Done Stepping';
 // Interactive HTML section
 CanvasElement canvas = querySelector('#polygon-canvas');
 CanvasRenderingContext2D canvasCtx = canvas.context2D;
-ButtonElement triangulateToggle = querySelector('#triangulate');
+ButtonElement triangulateToggle = querySelector('#triangulate-toggle');
 ButtonElement stepThroughToggle = querySelector('#step-through-toggle');
 ButtonElement stepButton = querySelector('#step');
+DivElement stepThroughModeInfoDiv = querySelector('#step-through-mode-info');
 
-
-/*== TODO Info section ==*/
 
 // Algorithm HTML section
 DivElement case1Div = querySelector('#case-one');
@@ -227,6 +226,9 @@ void onStepThroughToggled(var _) {
   // Alter the HTML & CSS of the button
   stepThroughToggle.text = stepThroughMode ? stepThroughToggleOnText : stepThroughToggleOffText;
   stepThroughToggle.classes.toggle('toggle-on', stepThroughMode);
+
+  // Alter CSS to show the extra info
+  stepThroughModeInfoDiv.style.display = stepThroughMode ? '' : 'none';
 }
 
 
