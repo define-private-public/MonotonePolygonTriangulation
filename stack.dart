@@ -51,6 +51,12 @@ class Stack<T> {
     return other;
   }
 
+
+  // Sets the data in this stack from another one
+  // TODO test if this does a deep copy or not (probably not)
+  void setFrom(Stack<T> other) =>
+    _list = new List<T>.from(other._list);
+
  
   // Get a string representation of the elements (topmost first)
   String toString() {

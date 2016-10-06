@@ -318,7 +318,7 @@ Point getPointAtProcessingIndex(List<Point> polygon, int index) {
 // Returns a List of LineSegments, that are the diagonals that create the
 // triangulated Polygon.
 // TODO redocument
-List<LineSegment> getDiagonals(List<Point> polygon, [int maxSteps=0]) {
+List<LineSegment> getDiagonals(List<Point> polygon, [int maxSteps=0, Stack<Point> outReflexChain=null]) {
   List<LineSegment> diagonals = [];
   int step = 0;
 
@@ -358,6 +358,7 @@ List<LineSegment> getDiagonals(List<Point> polygon, [int maxSteps=0]) {
     // TODO remove, debugging code
     if (step == maxSteps) {
       print('Step: ${step}');
+      print('RC: ${reflexChain}');
     }
 
     if (pSide != prevPSide) {
@@ -453,6 +454,12 @@ List<LineSegment> getDiagonals(List<Point> polygon, [int maxSteps=0]) {
     // Move to the next point
     prevPSide = pSide;
     pSide = getNextPoint(p, upperChain, lowerChain);
+  }
+
+  // The caller wants to know what the reflex chain is
+  if (outReflexChain != null) {
+    outReflexChain.clear();
+    outReflexChain.setFrom(reflexChain);
   }
 
   return diagonals;

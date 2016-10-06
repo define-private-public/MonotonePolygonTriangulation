@@ -127,25 +127,25 @@ void drawPolygon(CanvasRenderingContext2D ctx, List<Point> polygon, String clr) 
 
 // Draws a single Point
 // TODO document better
-void drawPoint(CanvasRenderingContext2D ctx, Point p, String clr, [bool fill=false, num radius=5]) {
+void drawPoint(CanvasRenderingContext2D ctx, Point p, String clr, [bool outline=true , num radius=5]) {
   // Make sure we've got something to draw
   if (radius < 0)
     return;
 
-  if (fill) {
-    // Fill draw
-    ctx..beginPath()
-       ..fillStyle = clr 
-       ..arc(p.x, p.y, radius, 0, PI * 2)
-       ..closePath()
-       ..fill();
-  } else {
+  if (outline) {
     // Outline draw
     ctx..beginPath()
        ..strokeStyle = clr 
        ..arc(p.x, p.y, radius, 0, PI * 2)
        ..closePath()
        ..stroke();
+  } else {
+    // Fill draw
+    ctx..beginPath()
+       ..fillStyle = clr 
+       ..arc(p.x, p.y, radius, 0, PI * 2)
+       ..closePath()
+       ..fill();
   }
 
 }
@@ -175,7 +175,7 @@ void drawScene() {
 
       // Draw the chains
       for (Point p in upperChain)
-        drawPoint(canvasCtx, p, upperChainPointClr, true);
+        drawPoint(canvasCtx, p, upperChainPointClr, false);
       for (Point p in lowerChain)
         drawPoint(canvasCtx, p, lowerChainPointClr);
     }
@@ -203,7 +203,7 @@ void drawScene() {
 
     // Draw the reflex Chain
     for (Point p in rc.getIter())
-      drawPoint(canvasCtx, p, reflexChainClr, true);
+      drawPoint(canvasCtx, p, reflexChainClr);
 
     // Draw step line
     if (stepThroughMode && (stepNumber > 0) && (stepNumber <= masterPolygon.length)) {
