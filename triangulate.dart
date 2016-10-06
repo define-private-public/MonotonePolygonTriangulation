@@ -8,16 +8,6 @@ import 'merge-sort.dart';
 import 'geometry.dart';
 
 
-/*== Return values ==*/
-// TODO document
-enum AlgorithmCase {
-  Invalid,
-  One,
-  TwoA,
-  TwoB
-}
-
-
 /*== Global State Variables ==*/
 // yes, yes... I know they are a bad practice to use, but they make this demo easier to write
 bool stepThroughMode = false;
