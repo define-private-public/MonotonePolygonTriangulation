@@ -168,18 +168,6 @@ void drawScene() {
     // Check if polygon is monotone
     bool isMonotone = isChainXMonotone(upperChain) && isChainXMonotone(lowerChain);
 
-    // Debug info
-    if (triangulating) {
-//      print('Upper Chain: ' + upperChain.toString());
-//      print('Lower Chain: ' + lowerChain.toString());
-
-      // Draw the chains
-      for (Point p in upperChain)
-        drawPoint(canvasCtx, p, upperChainPointClr, true);
-      for (Point p in lowerChain)
-        drawPoint(canvasCtx, p, lowerChainPointClr);
-    }
-
     // Pop off the first and last parts of the lower chain (no duplicates)
     lowerChain.removeAt(0);
     lowerChain.removeLast();
@@ -195,25 +183,32 @@ void drawScene() {
     // Get them
     Stack<Point> rc = new Stack<Point>();
     List<LineSegment> diagonals = getDiagonals(masterPolygon, stepNumber, rc);
-//    print(diagonals);
 
     // Draw the lines
     for (LineSegment l in diagonals)
       drawLineSegment(canvasCtx, l, monotoneLineClr); 
 
-    // Draw the reflex Chain
-    for (Point p in rc.getIter())
-      drawPoint(canvasCtx, p, reflexChainClr, true, 3);
+    if (stepThroughMode) {
+      // Draw the reflex Chain
+      for (Point p in rc.getIter())
+        drawPoint(canvasCtx, p, reflexChainClr, true);
 
-    // Draw step line
-    if (stepThroughMode && (stepNumber > 0) && (stepNumber <= masterPolygon.length)) {
-      Point p = getPointAtProcessingIndex(masterPolygon, (stepNumber - 1));
-      if (p != null) {
-        LineSegment l = new LineSegment(
-          new Point(p.x, 0),
-          new Point(p.x, canvas.width)
-        );
-        drawLineSegment(canvasCtx, l, currentLineClr);
+      // Draw the Upper & Lower Chains
+      for (Point p in upperChain)
+        drawPoint(canvasCtx, p, upperChainPointClr);
+      for (Point p in lowerChain)
+        drawPoint(canvasCtx, p, lowerChainPointClr);
+
+      // Draw step line
+      if ((stepNumber > 0) && (stepNumber <= masterPolygon.length)) {
+        Point p = getPointAtProcessingIndex(masterPolygon, (stepNumber - 1));
+        if (p != null) {
+          LineSegment l = new LineSegment(
+            new Point(p.x, 0),
+            new Point(p.x, canvas.width)
+          );
+          drawLineSegment(canvasCtx, l, currentLineClr);
+        }
       }
     }
   }
