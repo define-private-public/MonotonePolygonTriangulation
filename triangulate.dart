@@ -193,7 +193,7 @@ void drawScene() {
   // If triangulating, draw the diagonals
   if (triangulating) {
     // Get them
-    List<LineSegment> diagonals = getDiagonals(masterPolygon);
+    List<LineSegment> diagonals = getDiagonals(masterPolygon, stepNumber);
 //    print(diagonals);
 
     for (LineSegment l in diagonals)
@@ -326,7 +326,7 @@ void onStepButtonClicked(var _) {
     stepButton.disabled = true;
     stepButton.text = stepButtonDoneText;
   } else
-    stepButton.text = stepButtonText + ' [$stepNumber]';
+    stepButton.text = stepButtonText + ' [${stepNumber}]';
 
   drawScene();
 }

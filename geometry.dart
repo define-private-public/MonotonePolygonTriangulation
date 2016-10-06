@@ -317,9 +317,10 @@ Point getPointAtProcessingIndex(List<Point> polygon, int index) {
 //
 // Returns a List of LineSegments, that are the diagonals that create the
 // triangulated Polygon.
-// TODO step for reflex chain
-List<LineSegment> getDiagonals(List<Point> polygon) {
+// TODO redocument
+List<LineSegment> getDiagonals(List<Point> polygon, [int maxSteps=0]) {
   List<LineSegment> diagonals = [];
+  int step = 0;
 
   // Need at least 4 points to triangulate
   if (polygon.length < 4)
@@ -333,7 +334,6 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
 
   // Reflex Chain
   Stack<Point> reflexChain = new Stack<Point>();
-//  FromChain reflexChainOnSide = FromChain.None;
 
   // Put the first two points onto the reflex chain
   // First Point
@@ -345,17 +345,28 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
   pSide = getNextPoint(p, upperChain, lowerChain);
   reflexChain.push(p.copy());
 
-  // Set the reflex chain side
-//  reflexChainOnSide = pSide;
-  // TODO need to set the reflex sides
-
   // Loop through creating the diagonals, peel of each Point
   FromChain prevPSide = pSide;
   pSide = getNextPoint(p, upperChain, lowerChain);
   while (pSide != FromChain.None) {
+    // If stepping, check to see if we've done enough steps
+    if ((maxSteps > 0) && (step >= maxSteps))
+      break;
+    else
+      step++;
+
+    // TODO remove, debugging code
+    if (step == maxSteps) {
+      print('Step: ${step}');
+    }
+
     if (pSide != prevPSide) {
       // Case 1: p (a.k.a v_i) is on the opposite side of the Reflex Chain
       //         add diagonals for all points on the reflex chain except for the last one
+      // TODO remove, debugging code
+      if (step == maxSteps) {
+        print('Case 1');
+      }
 
       // Store the topmost point on the chain
       Point topmost = reflexChain.pop();
@@ -373,13 +384,9 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
       // The topmost and p and put onto the relfex chain
       reflexChain.push(topmost.copy());
       reflexChain.push(p.copy());
-
-      // Reflex chain also switches sides
-//      reflexChainOnSide = pSide;
     } else {
       // Case 2, p is on the same side of the Reflex Chain
       // TODO there might be a bug here, comeback later
-      print('size: ' + reflexChain.size().toString());
       Point b = reflexChain.peek(0);
       Point a = reflexChain.peek(1);
 
@@ -398,6 +405,10 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
       if (caseA) {
         // Case 2a: p is visible to part of the Relfex Chain
         bool done = false;
+        // TODO remove, debugging code
+        if (step == maxSteps) {
+          print('Case 2a');
+        }
 
         while (!done) {
           bool addDiagonal = false;
@@ -414,7 +425,6 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
           
           // Either add or diagonal or stop addng them
           if (addDiagonal) {
-            // TODO comment is wrong here (or the code is)  figure out the issue
             // Add the diagonal a -> p, remove a from the Relfex Chain
             diagonals.add(new LineSegment(a, p));
             reflexChain.pop();
@@ -430,6 +440,10 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
         reflexChain.push(p.copy());
       } else {
         // Case 2b: p is not visible to the Relfex Chain, just add it
+        // TODO remove, debugging code
+        if (step == maxSteps) {
+          print('Case 2b');
+        }
         reflexChain.push(p.copy());
       }
     }
@@ -441,7 +455,6 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
     pSide = getNextPoint(p, upperChain, lowerChain);
   }
 
-  // TODO stepping code
   return diagonals;
 }
 
