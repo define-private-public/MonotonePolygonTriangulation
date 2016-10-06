@@ -333,7 +333,7 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
 
   // Reflex Chain
   Stack<Point> reflexChain = new Stack<Point>();
-  FromChain reflexOnSide = FromChain.None;
+//  FromChain reflexChainOnSide = FromChain.None;
 
   // Put the first two points onto the reflex chain
   // First Point
@@ -343,6 +343,11 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
 
   // Second point
   pSide = getNextPoint(p, upperChain, lowerChain);
+  reflexChain.push(p.copy());
+
+  // Set the reflex chain side
+//  reflexChainOnSide = pSide;
+  // TODO need to set the reflex sides
 
   // Loop through creating the diagonals, peel of each Point
   FromChain prevPSide = pSide;
@@ -368,9 +373,13 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
       // The topmost and p and put onto the relfex chain
       reflexChain.push(topmost.copy());
       reflexChain.push(p.copy());
+
+      // Reflex chain also switches sides
+//      reflexChainOnSide = pSide;
     } else {
       // Case 2, p is on the same side of the Reflex Chain
       // TODO there might be a bug here, comeback later
+      print('size: ' + reflexChain.size().toString());
       Point b = reflexChain.peek(0);
       Point a = reflexChain.peek(1);
 
@@ -406,8 +415,8 @@ List<LineSegment> getDiagonals(List<Point> polygon) {
           // Either add or diagonal or stop addng them
           if (addDiagonal) {
             // TODO comment is wrong here (or the code is)  figure out the issue
-            // Add the diagonal b -> p, remove a from the Relfex Chain
-            diagonals.add(new LineSegment(b, p));
+            // Add the diagonal a -> p, remove a from the Relfex Chain
+            diagonals.add(new LineSegment(a, p));
             reflexChain.pop();
 
             // Add evertying but the last Point
