@@ -179,7 +179,7 @@ void drawScene() {
   if (triangulating) {
     // Get them
     Stack<Point> rc = new Stack<Point>();
-    AlgorithmCase ac = AlgorithmCase.Invalid;
+    int ac = CASE_INVALID;
     List<LineSegment> diagonals = getDiagonals(masterPolygon, stepNumber, rc, ac);
 
     // Draw the lines

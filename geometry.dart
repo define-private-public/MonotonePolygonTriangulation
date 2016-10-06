@@ -10,16 +10,10 @@ import 'stack.dart';
 
 
 // To denote which part of the algorithm was in use
-enum AlgorithmCase {
-  Invalid,
-  One,
-  TwoA,
-  TwoB
-}
 const int CASE_INVALID = 0;
-const int CASE_ONE = 1;
-const int CASE_TWO_A = 2;
-const int CASE_TWO_B = 3;
+const int CASE_1 = 1;
+const int CASE_2_A = 2;
+const int CASE_2_B = 3;
 
 // Used when pulling off points from the chains
 enum FromChain {
@@ -336,7 +330,7 @@ List<LineSegment> getDiagonals(
   [
     int maxSteps=0,
     Stack<Point> outReflexChain=null,
-    AlgorithmCase lastCase=AlgorithmCase.Invalid
+    int lastCase=CASE_INVALID,
   ]
 ) {
   List<LineSegment> diagonals = [];
@@ -405,7 +399,7 @@ List<LineSegment> getDiagonals(
     if (pSide != prevPSide) {
       // Case 1: p (a.k.a v_i) is on the opposite side of the Reflex Chain
       //         add diagonals for all points on the reflex chain except for the last one
-      lastCase = AlgorithmCase.One;
+      lastCase = CASE_1;
 
       // Store the topmost point on the chain
       Point topmost = reflexChain.peek(0).copy();
@@ -442,7 +436,7 @@ List<LineSegment> getDiagonals(
 
       if (caseA) {
         // Case 2a: p is visible to part of the Relfex Chain
-        lastCase = AlgorithmCase.TwoA;
+        lastCase = CASE_2_A;
 
         // Keep going until we're not visible anymore
         bool done = false;
@@ -476,7 +470,7 @@ List<LineSegment> getDiagonals(
         reflexChain.push(p.copy());
       } else {
         // Case 2b: p is not visible to the Relfex Chain, just add it
-        lastCase = AlgorithmCase.TwoB;
+        lastCase = CASE_2_B;
         reflexChain.push(p.copy());
       }
     }
