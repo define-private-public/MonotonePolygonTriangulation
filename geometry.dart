@@ -355,19 +355,15 @@ List<LineSegment> getDiagonals(List<Point> polygon, [int maxSteps=0, Stack<Point
     else
       step++;
 
-    // TODO remove, debugging code
-    if (step == maxSteps) {
-      print('Step: ${step}');
-      print('RC: ${reflexChain}');
+    // The caller wants to know what the reflex chain is
+    if (outReflexChain != null) {
+      outReflexChain.clear();
+      outReflexChain.setFrom(reflexChain);
     }
 
     if (pSide != prevPSide) {
       // Case 1: p (a.k.a v_i) is on the opposite side of the Reflex Chain
       //         add diagonals for all points on the reflex chain except for the last one
-      // TODO remove, debugging code
-      if (step == maxSteps) {
-        print('Case 1');
-      }
 
       // Store the topmost point on the chain
       Point topmost = reflexChain.peek(0).copy();
@@ -387,7 +383,6 @@ List<LineSegment> getDiagonals(List<Point> polygon, [int maxSteps=0, Stack<Point
       reflexChain.push(p.copy());
     } else {
       // Case 2, p is on the same side of the Reflex Chain
-      // TODO there might be a bug here, comeback later
       Point b = reflexChain.peek(0);
       Point a = reflexChain.peek(1);
 
@@ -406,10 +401,6 @@ List<LineSegment> getDiagonals(List<Point> polygon, [int maxSteps=0, Stack<Point
       if (caseA) {
         // Case 2a: p is visible to part of the Relfex Chain
         bool done = false;
-        // TODO remove, debugging code
-        if (step == maxSteps) {
-          print('Case 2a');
-        }
 
         while (!done) {
           bool addDiagonal = false;
@@ -441,25 +432,13 @@ List<LineSegment> getDiagonals(List<Point> polygon, [int maxSteps=0, Stack<Point
         reflexChain.push(p.copy());
       } else {
         // Case 2b: p is not visible to the Relfex Chain, just add it
-        // TODO remove, debugging code
-        if (step == maxSteps) {
-          print('Case 2b');
-        }
         reflexChain.push(p.copy());
       }
     }
 
-    // TODO stepthrough code
-
     // Move to the next point
     prevPSide = pSide;
     pSide = getNextPoint(p, upperChain, lowerChain);
-  }
-
-  // The caller wants to know what the reflex chain is
-  if (outReflexChain != null) {
-    outReflexChain.clear();
-    outReflexChain.setFrom(reflexChain);
   }
 
   return diagonals;
