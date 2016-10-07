@@ -1,8 +1,6 @@
 
 library triangulate;
 
-//import 'dart:io';
-
 // Test values
 List<num> testValues = [-2, -5.3, 4, 7, 1, 0.1, 15, 11, -4];
 
@@ -58,11 +56,4 @@ List<Comparable> mergeSort(List<Comparable> values) {
     return result;
   }
 }
-
-
-//// Main execution
-//void main() {
-//  print(testValues);
-//  print(mergeSort(testValues));
-//}
 
