@@ -331,6 +331,22 @@ Point getPointAtProcessingIndex(List<Point> polygon, int index) {
 }
 
 
+// TODO document
+bool pointVisibleOnReflexChain(List<Point> reflexChain, FromChain reflexChainSide, Point p) {
+  Point a = reflexChain.peek(1);
+  Point b = reflexChain.peek(0);
+  num d = determinant(a, b, p);
+
+  if ((reflexChainSide == FromChain.Lower) && (d < 0))
+    return true;
+  else if ((reflexChainSide == FromChain.Upper) && (d > 0)
+    return true;
+
+  return false;
+}
+
+
+
 // Does the Triangulation of the Polygon
 //   polygon -- a List of Points that is an X Monotone polygon
 //   maxSteps -- If set to 0, it will run the complete algorithm (default)
@@ -338,6 +354,7 @@ Point getPointAtProcessingIndex(List<Point> polygon, int index) {
 //
 // Returns a TriangulationResult type, see the class definition for details
 TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxSteps=0]) {
+
   TriangulationResult result = new TriangulationResult();
   int step = 0;
 
@@ -381,7 +398,7 @@ TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxStep
   }
 
   // Loop through creating the diagonals, peel of each Point
-  FromChain prevPSide = pSide;
+  FromChain reflexChainSide = pSide;
   pSide = getNextPoint(p, upperChain, lowerChain);
   // TODO
   while (pSide != FromChain.None) {
@@ -392,7 +409,7 @@ TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxStep
     else
       step++;
 
-    if (pSide != prevPSide) {
+    if (pSide != reflexChainSide) {
       // Case 1: p (a.k.a v_i) is on the opposite side of the Reflex Chain
       //         add diagonals for all points on the reflex chain except for the last one
       result.lastCase = AlgorithmCase.Case1;
@@ -415,19 +432,30 @@ TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxStep
       reflexChain.push(p.copy());
     } else {
       // Case 2, p is on the same side of the Reflex Chain
-      Point b = reflexChain.peek(0);
-      Point a = reflexChain.peek(1);
+      bool caseA = false;   // For this code, we're going to start out assuming case B
+      Point a, b;
+      num d;
 
-      num d = determinant(a, b, p);
-      bool caseA = false;
+      a = reflexChain.peek(1);
+      b = reflexChain.peek(0);
+      d = determinant(a, b, p);
 
-      // If we're from the upper chain, look for a determinant for case 2a (visible)
-      // If the reflex is on the lower, we want a positive determinant for case 2a (visible)
-      if ((prevPSide == FromChain.Upper) && (d < 0))
-        caseA = true;
-      else if ((prevPSide == FromChain.Lower) && (d > 0))
-        caseA = true;
+      if (reflexChainSide == FromChain.Lower) {
+        if (d < 0)
+          caseA = true;
+      } else if (reflexChainSide == FromChain.Upper) {
+        if (d > 0)
+          caseA = true;
+      }
 
+//      // If we're from the upper chain, look for a determinant for case 2a (visible)
+//      // If the reflex is on the lower, we want a positive determinant for case 2a (visible)
+//      if ((reflexChainSide == FromChain.Upper) && (d < 0))
+//        caseA = true;
+//      else if ((reflexChainSide == FromChain.Lower) && (d > 0))
+//        caseA = true;
+
+      print(reflexChainSide);
       print(a);
       print(b);
       print(d);
@@ -443,16 +471,18 @@ TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxStep
         bool done = false;
         while (!done) {
           bool addDiagonal = false;
-          b = reflexChain.peek(0);
-          a = reflexChain.peek(1);
-          d = determinant(a, b, p);
 
-          // If we're from the upper chain, look for negative for visibility
-          // If the reflex is on the lower, look for positive for visibility
-          if ((prevPSide == FromChain.Upper) && (d < 0))
-            addDiagonal = true;
-          else if ((prevPSide == FromChain.Lower) && (d > 0))
-            addDiagonal = true;
+          a = reflexChain.peek(1);
+          b = reflexChain.peek(0);
+          d = determinant(a, b, p);
+    
+          if (reflexChainSide == FromChain.Lower) {
+            if (d < 0)
+              addDiagonal = true;
+          } else if (reflexChainSide == FromChain.Upper) {
+            if (d > 0)
+              addDiagonal = true;
+          }
           
           // Either add or diagonal or stop addng them
           if (addDiagonal) {
@@ -481,7 +511,7 @@ TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxStep
     result.lastReflexChain.setFrom(reflexChain);
 
     // Move to the next point
-    prevPSide = pSide;
+    reflexChainSide = pSide;
     pSide = getNextPoint(p, upperChain, lowerChain);
   }
 
