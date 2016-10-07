@@ -99,9 +99,9 @@
         <div id="control-section">
           <h2 class="mini-header">Controls:</h2>
 
-          <p>Use the Left Mouse Button to add points to the polygon.  Right Click to remove the last added point.</p>
+          <p>Use the Left Mouse Button to add Points to the Polygon.  Right Click to remove the last added Point.</p>
           <p>If the Polygon turns red, that means that it isn't X Monotone and will not triangulate.</p>
-          <p>At least four points are needed to Triangulate.</p>
+          <p>At least four Points are needed to Triangulate.</p>
 
           <button id="triangulate-toggle" disabled>Triangulate [Off]</button><br>
           <button id="step" disabled>Step</button><br>
@@ -115,8 +115,8 @@
     <br>
 
     <div id="step-through-mode-info" class="row" style="display: none;">
-      <p>The points with a purple ring around them are part of the Upper Chain, where as the ones with a green ring around them are from the Lower Chain.  If a ring is filled in with red, that means it's part of the Reflex Chain at that step.  The vertical red line marks which point is currently being tested.</p>
-      <p>The boxes below highlight which case of the algorithm the current point is hitting.</p>
+      <p>The Points with a purple ring around them are part of the Upper Chain, where as the ones with a green ring around them are from the Lower Chain.  If a ring is filled in with red, that means it's part of the Reflex Chain at that step.  The vertical red line marks which Point is currently being tested.</p>
+      <p>The boxes below highlight which case of the algorithm the current Point is hitting.</p>
     </div>
 
     <div id="algorithm" class="algorithm-case row">
@@ -138,7 +138,7 @@
         <div id="case-two-a" class="algorithm-case">
           <strong>Case 2a:</strong> The current Point (<em>p</em>) is visible to some (or all) Points on the Reflex Chain.<br>
           <br>
-          Draw a diagonal from each point on the Reflex Chain that is visible to <em>p</em>.<br>
+          Draw a diagonal from each Point on the Reflex Chain that is visible to <em>p</em>.<br>
           Remove all of the Points from the Reflex Chain where there was a diagonal drawn, except for the last one.<br>
           Add <em>p</em> to the Reflex Chain.
         </div>
@@ -150,6 +150,7 @@
         </div>
       </div>
     </div>
+
   </div>
 
 <!--  <script type="application/dart" src="triangulate.dart"></script> -->
