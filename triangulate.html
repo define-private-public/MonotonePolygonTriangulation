@@ -3,9 +3,46 @@
 
 <head>
   <title>Montone Polygon Triangulation</title>
-  <!-- TODO manually incluce necessary CSS from blog -->
-  <link rel="stylesheet" type="text/css" href="https://16bpp.net/statics/styles/main.css">
   <style type="text/css">
+    /* Taken from my website (https://16bpp.net/) */
+    .row {
+      max-width: 750px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #content {
+      background: white;
+      border: 1px solid #69B5E1;
+      padding: 10px;
+      font-size: 10pt;
+    }
+
+    body {
+      background: #EAF2F8;
+      font-family: sans-serif;
+      font-size: 9pt;
+      margin: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+    
+    .row::after {
+      content: "";
+      clear: both;
+      display: block;
+    }
+    
+    img, canvas {
+      max-width: 100%;
+    }
+    
+    a { color: blue; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    a:active { text-decoration: underline; color: orange; }
+
 
     /* CSS for this app */
     .algorithm-case {
