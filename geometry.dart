@@ -5,6 +5,7 @@
 
 library triangulate;
 
+//import 'dart:io';
 import 'stack.dart';
 
 
@@ -382,6 +383,7 @@ TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxStep
   // Loop through creating the diagonals, peel of each Point
   FromChain prevPSide = pSide;
   pSide = getNextPoint(p, upperChain, lowerChain);
+  // TODO
   while (pSide != FromChain.None) {
     // If stepping, check to see if we've done enough steps
     // This is not part of the algorithm
@@ -421,16 +423,21 @@ TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxStep
 
       // If we're from the upper chain, look for a determinant for case 2a (visible)
       // If the reflex is on the lower, we want a positive determinant for case 2a (visible)
-      if ((pSide == FromChain.Upper) && (d < 0))
+      if ((prevPSide == FromChain.Upper) && (d < 0))
         caseA = true;
-      else if ((pSide == FromChain.Lower) && (d > 0))
+      else if ((prevPSide == FromChain.Lower) && (d > 0))
         caseA = true;
+
+      print(a);
+      print(b);
+      print(d);
+      print(caseA);
 
       // If the determinant is zero, than that means it's not visible, so it's case 2b
 
       if (caseA) {
         // Case 2a: p is visible to part of the Relfex Chain
-      result.lastCase = AlgorithmCase.Case2a;
+        result.lastCase = AlgorithmCase.Case2a;
 
         // Keep going until we're not visible anymore
         bool done = false;
@@ -442,9 +449,9 @@ TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxStep
 
           // If we're from the upper chain, look for negative for visibility
           // If the reflex is on the lower, look for positive for visibility
-          if ((pSide == FromChain.Upper) && (d < 0))
+          if ((prevPSide == FromChain.Upper) && (d < 0))
             addDiagonal = true;
-          else if ((pSide == FromChain.Lower) && (d > 0))
+          else if ((prevPSide == FromChain.Lower) && (d > 0))
             addDiagonal = true;
           
           // Either add or diagonal or stop addng them
@@ -481,3 +488,11 @@ TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxStep
   return result;
 }
 
+
+void main() {
+  Point a = new Point(0, 0);
+  Point b = new Point(0, 1);
+  Point p = new Point(2, 2);
+
+  print(determinant(a, b, p));
+}
