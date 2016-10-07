@@ -5,7 +5,6 @@
 
 library triangulate;
 
-//import 'dart:io';
 import 'stack.dart';
 
 
@@ -310,7 +309,6 @@ FromChain getNextPoint(Point p, List<Point> upperChain, List<Point> lowerChain) 
 
 // Get's the Point from the Polygon, with respect to ascending X axis order.
 // This function is unfortunatly a little computationally intensive for this example
-// TODO document better
 Point getPointAtProcessingIndex(List<Point> polygon, int index) {
   List<Point> uc = [];
   List<Point> lc = [];
@@ -338,7 +336,6 @@ Point getPointAtProcessingIndex(List<Point> polygon, int index) {
 //               If set to a positive value, it will run that many steps (at least)`
 //
 // Returns a TriangulationResult type, see the class definition for details
-// TODO redocument
 TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxSteps=0]) {
   TriangulationResult result = new TriangulationResult();
   int step = 0;

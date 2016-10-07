@@ -6,6 +6,8 @@
   <!-- TODO manually incluce necessary CSS from blog -->
   <link rel="stylesheet" type="text/css" href="https://16bpp.net/statics/styles/main.css">
   <style type="text/css">
+
+    /* CSS for this app */
     .algorithm-case {
       border: 1px solid black;
       border-radius: 6px;
@@ -76,66 +78,37 @@
     </div>
 
     <div id="algorithm" class="algorithm-case row">
-      <span style="background: yellow">TODO: rewrite the steps to be a bit more accurate</span>
-
       <h2 class="mini-header">Algorithm:</h2>
-      <div id="step-one">Sort the points by an ascending X value.</div>
-      <div id="step-two">Push the first two points onto the Reflex Chain.</div>
+      <p>First split the Polygon into two chains, an Upper Chain that contains the topmost Points, and a Lower Chain that contains the bottommost Points.</p>
+      <p>With respect to an ascending X axis value, push the first two Points from the Upper &amp; Lower Chains onto the Reflex Chain (Which is a LIFO).</p>
 
       <div id="case-one" class="algorithm-case">
-        <strong>Case 1:</strong> Current point is on a different chain of the Polygon<br />
-        <br />
-        Draw a diagonal from each point on the Relfex Chain to the new point.<br />
-        <em>v</em> = last point on the Relfex Chain<br />
-        Clear the Relfex Chain<br />
-        Put <em>v</em> back onto the Relfex Chain<br />
-        Put the new point onto the Reflex Chain
+        <strong>Case 1:</strong> The current Point (<em>p</em>) is on an opposite side of the Reflex Chain <br>
+        <br>
+        <em>v</em> = topmost Point on the Reflex Chain.<br>
+        Draw a diagonal from each Point on the Reflex Chain to <em>p</em>.<br>
+        Clear the Reflex Chain.<br>
+        Push <em>v</em> back onto the Reflex Chain.<br>
+        Push <em>p</em> onto the Reflex Chain.
       </div>
 
       <div id="case-two" class="algoritm-case">
         <div id="case-two-a" class="algorithm-case">
-          <strong>Case 2a:</strong> Current point is visible to some (or all) points on the chain.<br />
-          <br />
-          Draw a diagonal from each point on the Reflex Chain that is visible<br />
-          to the new point.<br />
-          Remove all of the points from the Relfex Chain where there was a diagonal draw,<br />
-          except for the last diagonal.<br />
-          Add the new point to the Reflex Chain.
+          <strong>Case 2a:</strong> The current Point (<em>p</em>) is visible to some (or all) Points on the Reflex Chain.<br>
+          <br>
+          Draw a diagonal from each point on the Reflex Chain that is visible to <em>p</em>.<br>
+          Remove all of the Points from the Reflex Chain where there was a diagonal drawn, except for the last one.<br>
+          Add <em>p</em> to the Reflex Chain.
         </div>
 
         <div id="case-two-b" class="algorithm-case">
-          <strong>Case 2b:</strong> Current point is not visible to any other points on the chain<br />
-          <br />
-          Just add the new point to the Relfex Chain
+          <strong>Case 2a:</strong> The current Point (<em>p</em>) is not visible to any Points on the Reflex Chain.<br>
+          <br>
+          Just add <em>p</em> to the Reflex Chain.
         </div>
       </div>
     </div>
   </div>
-    
-<!--
-      <p>
-        <em style="font-size:12px;">Please enter points in a clock-wise order.</em>
-      </p>
-        </td>
-      </tr>
-    </table>
-  <br />
-  <div id="controls">
-    <p>Controls:</p>
-    <button id="step_through"></button>
-    <button id="triangulate"></button>
-    <button id="step"></button>
-
-    <p>Info:</p>
-    <div id="info_side"></div>
-    <div id="info_p"></div>
-    <div id="info_reflex_chain"></div>
-    <div id="info_upper_chain"></div>
-    <div id="info_lower_chain"></div>
-
-  </div>
-
--->
 
   <script type="application/dart" src="triangulate.dart"></script>
 <!--  <script type="application/javascript" src="out.js"></script> -->
