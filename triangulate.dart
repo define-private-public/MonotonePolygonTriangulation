@@ -214,10 +214,10 @@ void drawSceneAndUpdateHTML() {
           drawLineSegment(canvasCtx, l, currentLineClr);
         }
 
-        // Select the proper algorith case
-        switch (result.lastCase) {
-
-        }
+        // Select the proper algorithm case
+        case1Div.classes.toggle('current', result.lastCase == AlgorithmCase.Case1);
+        case2aDiv.classes.toggle('current', result.lastCase == AlgorithmCase.Case2a);
+        case2bDiv.classes.toggle('current', result.lastCase == AlgorithmCase.Case2b);
       }
     }
   }
@@ -349,6 +349,11 @@ void onStepButtonClicked(var _) {
   if (stepNumber > masterPolygon.length) {
     stepButton.disabled = true;
     stepButton.text = stepButtonDoneText;
+
+    // Un-highlight all of the cases
+    case1Div.classes.toggle('current', false);
+    case2aDiv.classes.toggle('current', false);
+    case2bDiv.classes.toggle('current', false);
   } else
     stepButton.text = stepButtonText + ' [${stepNumber}]';
 
