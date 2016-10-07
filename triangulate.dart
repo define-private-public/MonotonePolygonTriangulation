@@ -1,10 +1,12 @@
+// triangulate.dart
+//
+// This is the main file of the program.
 
 library triangulate;
 
 import 'dart:html';
 import 'dart:math';
 import 'stack.dart';
-import 'merge-sort.dart';
 import 'geometry.dart';
 
 
@@ -15,14 +17,6 @@ bool triangulating = false;
 List<Point> masterPolygon = [];
 int stepNumber = -1;
 
-
-/*== Functions ==*/
-// Makes a nice RGB value
-String rgb(int r, int g, int b) =>
-  'rgb($r, $g, $b)';
-
-
-/*== Some constants ==*/
 // For drawing
 String backgroundClr = rgb(0, 46, 76);
 String monotoneLineClr = rgb(153, 214, 255);
@@ -32,8 +26,6 @@ String lowerChainPointClr = rgb(35, 255, 39);
 String reflexChainClr = rgb(220, 0, 0);
 String currentLineClr = rgb(220, 0, 0);
 const num lineWidth = 1.5;
-
-// Algorithm Case colors
 String caseInactiveClr = rgb(0xFF, 0xFF, 0xFF);
 String caseActiveClr = rgb(153, 214, 255);
 
@@ -46,7 +38,6 @@ const String stepButtonText = 'Step';
 const String stepButtonStartText = 'Start Stepping';
 const String stepButtonDoneText = 'Done Stepping';
 
-
 // Interactive HTML section
 CanvasElement canvas = querySelector('#polygon-canvas');
 CanvasRenderingContext2D canvasCtx = canvas.context2D;
@@ -56,7 +47,6 @@ ButtonElement stepThroughToggle = querySelector('#step-through-toggle');
 ButtonElement stepButton = querySelector('#step');
 DivElement stepThroughModeInfoDiv = querySelector('#step-through-mode-info');
 
-
 // Algorithm HTML section
 DivElement case1Div = querySelector('#case-one');
 DivElement case2aDiv = querySelector('#case-two-a');
@@ -64,6 +54,9 @@ DivElement case2bDiv = querySelector('#case-two-b');
 
 
 /*== Functions ==*/
+// Makes a nice RGB value
+String rgb(int r, int g, int b) =>
+  'rgb($r, $g, $b)';
 
 // Turns on/off the Triangulate button depending upon the state of the polygon
 // Also enables/disables the Clear button
@@ -230,8 +223,8 @@ void drawSceneAndUpdateHTML() {
 }
 
 
-
 /*== Event Handlers ==*/
+
 // For when the clear button is pressed, cleans out the Polygon
 void onClearButtonClicked(var _) {
   // Alter the polygon
@@ -241,6 +234,7 @@ void onClearButtonClicked(var _) {
   // Redraw
   drawSceneAndUpdateHTML();
 }
+
 
 // For the stepThrough toggle button, Will toggle on/off "step through" mode
 void onStepThroughToggled(var _) {

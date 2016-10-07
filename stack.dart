@@ -1,8 +1,13 @@
+// stack.dart
+// 
+// A simple LIFO implementation
+// Dart doesn't have one by default, and using Queue might be a little clunky
+
 
 library triangulate;
 
-// A simple LIFO implementation
-// Dart doesn't have one by default, and using Queue might be a little clunky
+
+// Our collection
 class Stack<T> {
   // Under the hood there is actually a list
   List<T> _list;
