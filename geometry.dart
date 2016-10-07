@@ -339,9 +339,9 @@ bool pointVisibleOnReflexChain(List<Point> reflexChain, FromChain reflexChainSid
 
   // TODO remove result
   bool result = false;
-  if ((reflexChainSide == FromChain.Lower) && (d > 0))
+  if ((reflexChainSide == FromChain.Lower) && (d < 0))
     result = true;
-  else if ((reflexChainSide == FromChain.Upper) && (d < 0))
+  else if ((reflexChainSide == FromChain.Upper) && (d > 0))
     result = true;
 
   // TODO remove after debuggin
