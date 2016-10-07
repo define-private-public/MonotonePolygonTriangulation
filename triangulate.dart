@@ -155,7 +155,7 @@ void drawPoint(CanvasRenderingContext2D ctx, Point p, String clr, [bool fill=fal
 
 // The main drawing function of the program
 // It has some non-drawing logic though...
-void drawScene() {
+void drawSceneAndUpdateHTML() {
   // Fill the background
   canvasCtx..fillStyle = backgroundClr
            ..fillRect(0, 0, canvas.width, canvas.height);
@@ -214,7 +214,10 @@ void drawScene() {
           drawLineSegment(canvasCtx, l, currentLineClr);
         }
 
-        print(result.lastCase);
+        // Select the proper algorith case
+        switch (result.lastCase) {
+
+        }
       }
     }
   }
@@ -230,7 +233,7 @@ void onClearButtonClicked(var _) {
   onPolygonChanged();
 
   // Redraw
-  drawScene();
+  drawSceneAndUpdateHTML();
 }
 
 // For the stepThrough toggle button, Will toggle on/off "step through" mode
@@ -257,7 +260,7 @@ void onLeftClick(MouseEvent e) {
   onPolygonChanged();
   
   // redraw the scene
-  drawScene();
+  drawSceneAndUpdateHTML();
 }
 
 
@@ -274,7 +277,7 @@ void onRightClick(MouseEvent e) {
     // Make sure we have enough points
    onPolygonChanged();
 
-    drawScene();
+    drawSceneAndUpdateHTML();
   }
 }
 
@@ -286,7 +289,7 @@ void onMouseMove(MouseEvent e) {
     masterPolygon.add(new Point(e.offset.x, e.offset.y));
 
     // redraw the scene
-    drawScene();
+    drawSceneAndUpdateHTML();
 
     // remove that point now
     masterPolygon.removeLast();
@@ -297,7 +300,7 @@ void onMouseMove(MouseEvent e) {
 // For the Canvas, if the mouse was moved out, it will redraw the scene
 // This is so we don't have any left-over preview lines
 void onMouseOut(var _) =>
-  drawScene();
+  drawSceneAndUpdateHTML();
 
 
 // For the Triangulate button, when it's clicked
@@ -310,7 +313,7 @@ void onTriangulateToggled(var _) {
   stepNumber = triangulating ? 0 : -1;
 
   // draw the scene
-  drawScene();
+  drawSceneAndUpdateHTML();
 
   // Set HTML & CSS for the button
   triangulateToggle.text = triangulating ? triangulateToggleOnText : triangulateToggleOffText;
@@ -349,7 +352,7 @@ void onStepButtonClicked(var _) {
   } else
     stepButton.text = stepButtonText + ' [${stepNumber}]';
 
-  drawScene();
+  drawSceneAndUpdateHTML();
 }
 
 
@@ -367,6 +370,6 @@ void main() {
   canvas.onMouseOut.listen(onMouseOut);
 
   // Draw the scene
-  drawScene();
+  drawSceneAndUpdateHTML();
 }
 
