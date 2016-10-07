@@ -74,8 +74,14 @@ void onPolygonChanged() {
   // Need at least four points to triangulate
   triangulateToggle.disabled = (masterPolygon.length <= 3);
 
-  // TODO check for monotinicy as well?
-  // TODO check for simplicity
+  // Make sure the polygon is X Montone
+  List<Point> upperChain = [], lowerChain = [];
+  bool gotChains = getUpperAndLowerChains(masterPolygon, lowerChain, upperChain);
+  if (gotChains)
+    triangulateToggle.disabled = !(isChainXMonotone(upperChain) && isChainXMonotone(lowerChain));
+  else
+    triangulateToggle.disabled = true;
+
 }
 
 
