@@ -53,7 +53,7 @@ class Stack<T> {
 
 
   // Sets the data in this stack from another one
-  // TODO test if this does a deep copy or not (probably not)
+  // I don't think this does a deep copy
   void setFrom(Stack<T> other) =>
     _list = new List<T>.from(other._list);
 

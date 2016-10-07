@@ -126,8 +126,14 @@ void drawPolygon(CanvasRenderingContext2D ctx, List<Point> polygon, String clr) 
 }
 
 
-// Draws a single Point
-// TODO document better
+// Draws a single Point, either as an utline or a filled in dot
+//   ctx -- a CanvasRenderingContext2D
+//   p -- the Point to draw
+//   clr -- a color to draw the lines
+//   [fill=false] -- set to false for an outline draw, true if you want a
+//                   filled in Point
+//   [radius=7] -- should be a positive number, what the radius of the
+//                 drawn/filled circle to should be
 void drawPoint(CanvasRenderingContext2D ctx, Point p, String clr, [bool fill=false, num radius=7]) {
   // Make sure we've got something to draw
   if (radius < 0)

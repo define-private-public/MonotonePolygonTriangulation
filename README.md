@@ -8,8 +8,3 @@ interactive polygon triangulation demo (for X-Monotone polygons only).
 The project is done with Dart, though using `dart2js` you can compile it to
 JavaScript.
 
-TODO:
-  update code
-  reindnet
-  test in dartium, chrome firefox
-  no tables for layouts!
