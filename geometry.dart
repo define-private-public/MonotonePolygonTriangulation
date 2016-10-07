@@ -337,10 +337,21 @@ bool pointVisibleOnReflexChain(List<Point> reflexChain, FromChain reflexChainSid
   Point b = reflexChain.peek(0);
   num d = determinant(a, b, p);
 
-  if ((reflexChainSide == FromChain.Lower) && (d < 0))
-    return true;
-  else if ((reflexChainSide == FromChain.Upper) && (d > 0))
-    return true;
+  // TODO remove result
+  bool result = false;
+  if ((reflexChainSide == FromChain.Lower) && (d > 0))
+    result = true;
+  else if ((reflexChainSide == FromChain.Upper) && (d < 0))
+    result = true;
+
+  // TODO remove after debuggin
+  print(reflexChainSide);
+  print('A: ${a}');
+  print('B: ${b}');
+  print('P: ${p}');
+  print('d=${d}');
+  print('result=${result}');
+  print('--------');
 
   return false;
 }
@@ -400,7 +411,6 @@ TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxStep
   // Loop through creating the diagonals, peel of each Point
   FromChain reflexChainSide = pSide;
   pSide = getNextPoint(p, upperChain, lowerChain);
-  // TODO
   while (pSide != FromChain.None) {
     // If stepping, check to see if we've done enough steps
     // This is not part of the algorithm
@@ -433,21 +443,6 @@ TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxStep
     } else {
       // Case 2, p is on the same side of the Reflex Chain
       bool caseA = pointVisibleOnReflexChain(reflexChain, reflexChainSide, p);
-
-//      // If we're from the upper chain, look for a determinant for case 2a (visible)
-//      // If the reflex is on the lower, we want a positive determinant for case 2a (visible)
-//      if ((reflexChainSide == FromChain.Upper) && (d < 0))
-//        caseA = true;
-//      else if ((reflexChainSide == FromChain.Lower) && (d > 0))
-//        caseA = true;
-
-//      print(reflexChainSide);
-//      print(a);
-//      print(b);
-//      print(d);
-//      print(caseA);
-
-      // If the determinant is zero, than that means it's not visible, so it's case 2b
 
       if (caseA) {
         // Case 2a: p is visible to part of the Relfex Chain
