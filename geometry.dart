@@ -332,7 +332,7 @@ Point getPointAtProcessingIndex(List<Point> polygon, int index) {
 
 
 // TODO document
-bool pointVisibleOnReflexChain(List<Point> reflexChain, FromChain reflexChainSide, Point p) {
+bool isPointVisibleFromReflexChain(List<Point> reflexChain, FromChain reflexChainSide, Point p) {
   Point a = reflexChain.peek(1);
   Point b = reflexChain.peek(0);
   num d = determinant(a, b, p);
@@ -343,12 +343,17 @@ bool pointVisibleOnReflexChain(List<Point> reflexChain, FromChain reflexChainSid
     result = true;
   else if ((reflexChainSide == FromChain.Upper) && (d > 0))
     result = true;
+//  if ((reflexChainSide == FromChain.Lower) && (d > 0))
+//    result = true;
+//  else if ((reflexChainSide == FromChain.Upper) && (d < 0))
+//    result = true;
 
   // TODO remove after debuggin
-  print(reflexChainSide);
+  print('--------');
   print('A: ${a}');
   print('B: ${b}');
   print('P: ${p}');
+  print('chain: ${reflexChainSide}');
   print('d=${d}');
   print('result=${result}');
   print('--------');
@@ -442,7 +447,7 @@ TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxStep
       reflexChain.push(p.copy());
     } else {
       // Case 2, p is on the same side of the Reflex Chain
-      bool caseA = pointVisibleOnReflexChain(reflexChain, reflexChainSide, p);
+      bool caseA = isPointVisibleFromReflexChain(reflexChain, reflexChainSide, p);
 
       if (caseA) {
         // Case 2a: p is visible to part of the Relfex Chain
@@ -453,7 +458,7 @@ TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxStep
         bool addDiagonal = true;
         bool done = false;
         while (!done) {
-          addDiagonal = pointVisibleOnReflexChain(reflexChain, reflexChainSide, p);
+          addDiagonal = isPointVisibleFromReflexChain(reflexChain, reflexChainSide, p);
           print('Add diagonal: ${addDiagonal}');
           
           // Either add or diagonal or stop addng them
@@ -495,9 +500,9 @@ TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxStep
 
 
 void main() {
-  Point a = new Point(0, 0);
-  Point b = new Point(0, 1);
-  Point p = new Point(2, 2);
+  Point a = new Point(54, 258);
+  Point b = new Point(90, 163);
+  Point p = new Point(149, 119);
 
   print(determinant(a, b, p));
 }

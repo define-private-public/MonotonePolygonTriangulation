@@ -163,7 +163,7 @@ void drawSceneAndUpdateHTML() {
 
   // Get the chains, Have to do a swap becuase Canvas is an upside down cartesian graph
   List<Point> upperChain = [], lowerChain = [];
-  bool gotChains = getUpperAndLowerChains(masterPolygon, lowerChain, upperChain);
+  bool gotChains = getUpperAndLowerChains(masterPolygon, upperChain, lowerChain);
 
   if (gotChains) {
     // Check if polygon is monotone
