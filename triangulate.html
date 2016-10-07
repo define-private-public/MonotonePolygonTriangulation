@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Polygon Triangulation</title>
+  <title>Montone Polygon Triangulation</title>
   <!-- TODO manually incluce necessary CSS from blog -->
   <link rel="stylesheet" type="text/css" href="https://16bpp.net/statics/styles/main.css">
   <style type="text/css">
@@ -48,7 +48,10 @@
 
 <body>
   <div id="content" style="max-width:750px">
-    <h1>X-Monotone Polygon Triangulation</h1>
+    <h1>Monotone Polygon Triangulation</h1>
+    <p>This is a small toy (made with <a href="https://dartlang.org/">Dart</a>, compiled to JavaScript), to illustrate the algorithm to triangulate a <a href="https://en.wikipedia.org/wiki/Monotone_polygon">Monotone Polygon</a>.  With this one, it only works for X-Monotone Polygons.  You'll find the algorithm <a href="https://www.cs.ucsb.edu/~suri/cs235/Triangulation.pdf">starting at page 20 in these lecture notes</a>.
+
+
     <div class="row">
       <div id="interactive">
         <canvas id="polygon-canvas" width="560" height="420"></canvas>
