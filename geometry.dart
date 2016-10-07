@@ -353,7 +353,7 @@ bool pointVisibleOnReflexChain(List<Point> reflexChain, FromChain reflexChainSid
   print('result=${result}');
   print('--------');
 
-  return false;
+  return result;
 }
 
 
@@ -446,12 +446,15 @@ TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxStep
 
       if (caseA) {
         // Case 2a: p is visible to part of the Relfex Chain
+        print('Case 2a');
         result.lastCase = AlgorithmCase.Case2a;
 
         // Keep going until we're not visible anymore
+        bool addDiagonal = true;
         bool done = false;
         while (!done) {
-          bool addDiagonal = pointVisibleOnReflexChain(reflexChain, reflexChainSide, p);
+          addDiagonal = pointVisibleOnReflexChain(reflexChain, reflexChainSide, p);
+          print('Add diagonal: ${addDiagonal}');
           
           // Either add or diagonal or stop addng them
           if (addDiagonal) {
@@ -472,6 +475,7 @@ TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxStep
         reflexChain.push(p.copy());
       } else {
         // Case 2b: p is not visible to the Relfex Chain, just add it
+        print('Case 2b');
         result.lastCase = AlgorithmCase.Case2b;
         reflexChain.push(p.copy());
       }
