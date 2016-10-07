@@ -253,11 +253,10 @@ void onStepThroughToggled(var _) {
 // For the Canvas, Adds a Point to the Polygon 
 void onLeftClick(MouseEvent e) {
   // On Left press, add a Point
-  if ((e.button == 0) && !triangulating)
+  if ((e.button == 0) && !triangulating) {
     masterPolygon.add(new Point(e.offset.x, e.offset.y));
-
-  // Make sure we have enough points
-  onPolygonChanged();
+    onPolygonChanged();
+  }
   
   // redraw the scene
   drawSceneAndUpdateHTML();
