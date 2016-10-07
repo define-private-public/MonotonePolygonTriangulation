@@ -339,7 +339,7 @@ bool pointVisibleOnReflexChain(List<Point> reflexChain, FromChain reflexChainSid
 
   if ((reflexChainSide == FromChain.Lower) && (d < 0))
     return true;
-  else if ((reflexChainSide == FromChain.Upper) && (d > 0)
+  else if ((reflexChainSide == FromChain.Upper) && (d > 0))
     return true;
 
   return false;
@@ -432,21 +432,7 @@ TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxStep
       reflexChain.push(p.copy());
     } else {
       // Case 2, p is on the same side of the Reflex Chain
-      bool caseA = false;   // For this code, we're going to start out assuming case B
-      Point a, b;
-      num d;
-
-      a = reflexChain.peek(1);
-      b = reflexChain.peek(0);
-      d = determinant(a, b, p);
-
-      if (reflexChainSide == FromChain.Lower) {
-        if (d < 0)
-          caseA = true;
-      } else if (reflexChainSide == FromChain.Upper) {
-        if (d > 0)
-          caseA = true;
-      }
+      bool caseA = pointVisibleOnReflexChain(reflexChain, reflexChainSide, p);
 
 //      // If we're from the upper chain, look for a determinant for case 2a (visible)
 //      // If the reflex is on the lower, we want a positive determinant for case 2a (visible)
@@ -455,11 +441,11 @@ TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxStep
 //      else if ((reflexChainSide == FromChain.Lower) && (d > 0))
 //        caseA = true;
 
-      print(reflexChainSide);
-      print(a);
-      print(b);
-      print(d);
-      print(caseA);
+//      print(reflexChainSide);
+//      print(a);
+//      print(b);
+//      print(d);
+//      print(caseA);
 
       // If the determinant is zero, than that means it's not visible, so it's case 2b
 
@@ -470,23 +456,13 @@ TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxStep
         // Keep going until we're not visible anymore
         bool done = false;
         while (!done) {
-          bool addDiagonal = false;
-
-          a = reflexChain.peek(1);
-          b = reflexChain.peek(0);
-          d = determinant(a, b, p);
-    
-          if (reflexChainSide == FromChain.Lower) {
-            if (d < 0)
-              addDiagonal = true;
-          } else if (reflexChainSide == FromChain.Upper) {
-            if (d > 0)
-              addDiagonal = true;
-          }
+          bool addDiagonal = pointVisibleOnReflexChain(reflexChain, reflexChainSide, p);
           
           // Either add or diagonal or stop addng them
           if (addDiagonal) {
             // Add the diagonal a -> p, remove a from the Relfex Chain
+            // (a is the 2nd last point on the chain from the rightmost end)
+            Point a = reflexChain.peek(1);
             result.diagonals.add(new LineSegment(a, p));
             reflexChain.pop();
 
