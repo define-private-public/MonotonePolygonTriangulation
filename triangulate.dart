@@ -177,17 +177,15 @@ void drawScene() {
 
   // If triangulating, draw the diagonals
   if (triangulating) {
-    // Get them
-    Stack<Point> rc = new Stack<Point>();
-    int ac = CASE_INVALID;
-    List<LineSegment> diagonals = getDiagonals(masterPolygon, stepNumber, rc, ac);
+    // Compute a triangulation
+    TriangulationResult result = triangulateXMontonePolygon(masterPolygon, stepNumber);
 
     // Draw the lines
-    for (LineSegment l in diagonals)
+    for (LineSegment l in result.diagonals)
       drawLineSegment(canvasCtx, l, monotoneLineClr); 
 
+    // Do some extra drawing if in step through mode
     if (stepThroughMode) {
-
       // Draw the Upper & Lower Chains
       for (Point p in upperChain)
         drawPoint(canvasCtx, p, upperChainPointClr);
@@ -197,10 +195,10 @@ void drawScene() {
       // Draw step line and Reflex Chain while stepping
       if ((stepNumber > 0) && (stepNumber <= masterPolygon.length)) {
         // Reflex Chain
-        for (Point p in rc.getIter())
+        for (Point p in result.lastReflexChain.getIter())
           drawPoint(canvasCtx, p, reflexChainClr, true);
 
-        // Line
+        // Current Step Line
         Point p = getPointAtProcessingIndex(masterPolygon, (stepNumber - 1));
         if (p != null) {
           LineSegment l = new LineSegment(
@@ -210,7 +208,7 @@ void drawScene() {
           drawLineSegment(canvasCtx, l, currentLineClr);
         }
 
-        print(ac);
+        print(result.lastCase);
       }
     }
   }

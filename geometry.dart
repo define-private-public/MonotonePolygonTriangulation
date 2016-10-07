@@ -10,10 +10,25 @@ import 'stack.dart';
 
 
 // To denote which part of the algorithm was in use
-const int CASE_INVALID = 0;
-const int CASE_1 = 1;
-const int CASE_2_A = 2;
-const int CASE_2_B = 3;
+enum AlgorithmCase {
+  Invalid,
+  Case1,
+  Case2a,
+  Case2b
+}
+
+// A return type for the `triangulateXMontonePolygon()` function
+class TriangulationResult {
+  List<LineSegment> diagonals;
+  Stack<Point> lastReflexChain;
+  AlgorithmCase lastCase;
+
+  // Inits the data
+  TriangulationResult() :
+    diagonals = [],
+    lastReflexChain = new Stack<Point>(),
+    lastCase = AlgorithmCase.Invalid;
+}
 
 // Used when pulling off points from the chains
 enum FromChain {
@@ -322,23 +337,15 @@ Point getPointAtProcessingIndex(List<Point> polygon, int index) {
 //   maxSteps -- If set to 0, it will run the complete algorithm (default)
 //               If set to a positive value, it will run that many steps (at least)`
 //
-// Returns a List of LineSegments, that are the diagonals that create the
-// triangulated Polygon.
+// Returns a TriangulationResult type, see the class definition for details
 // TODO redocument
-List<LineSegment> getDiagonals(
-  List<Point> polygon,
-  [
-    int maxSteps=0,
-    Stack<Point> outReflexChain=null,
-    int lastCase=CASE_INVALID,
-  ]
-) {
-  List<LineSegment> diagonals = [];
+TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxSteps=0]) {
+  TriangulationResult result = new TriangulationResult();
   int step = 0;
 
   // Need at least 4 points to triangulate
   if (polygon.length < 4)
-    return diagonals;
+    return result;
 
   // Get the Chains
   List<Point> upperChain = [], lowerChain = [];
@@ -359,13 +366,8 @@ List<LineSegment> getDiagonals(
   // only intersted in the algorithm
   step++;
   if ((maxSteps != 0) && (step >= maxSteps)) {
-    // The caller wants to know what the reflex chain is
-    if (outReflexChain != null) {
-      outReflexChain.clear();
-      outReflexChain.setFrom(reflexChain);
-    }
-
-    return diagonals;
+    result.lastReflexChain.setFrom(reflexChain);
+    return result;
   }
 
   // Second point
@@ -376,13 +378,8 @@ List<LineSegment> getDiagonals(
   // only intersted in the algorithm
   step++;
   if ((maxSteps != 0) && (step >= maxSteps)) {
-    // The caller wants to know what the reflex chain is
-    if (outReflexChain != null) {
-      outReflexChain.clear();
-      outReflexChain.setFrom(reflexChain);
-    }
-
-    return diagonals;
+    result.lastReflexChain.setFrom(reflexChain);
+    return result;
   }
 
   // Loop through creating the diagonals, peel of each Point
@@ -399,7 +396,7 @@ List<LineSegment> getDiagonals(
     if (pSide != prevPSide) {
       // Case 1: p (a.k.a v_i) is on the opposite side of the Reflex Chain
       //         add diagonals for all points on the reflex chain except for the last one
-      lastCase = CASE_1;
+      result.lastCase = AlgorithmCase.Case1;
 
       // Store the topmost point on the chain
       Point topmost = reflexChain.peek(0).copy();
@@ -408,7 +405,7 @@ List<LineSegment> getDiagonals(
       while(reflexChain.size() > 1) {
         // Pop from stack & make a diagonal
         Point v = reflexChain.pop();
-        diagonals.add(new LineSegment(v, p));
+        result.diagonals.add(new LineSegment(v, p));
       }
 
       // Ignore the last Point
@@ -436,7 +433,7 @@ List<LineSegment> getDiagonals(
 
       if (caseA) {
         // Case 2a: p is visible to part of the Relfex Chain
-        lastCase = CASE_2_A;
+      result.lastCase = AlgorithmCase.Case2a;
 
         // Keep going until we're not visible anymore
         bool done = false;
@@ -456,7 +453,7 @@ List<LineSegment> getDiagonals(
           // Either add or diagonal or stop addng them
           if (addDiagonal) {
             // Add the diagonal a -> p, remove a from the Relfex Chain
-            diagonals.add(new LineSegment(a, p));
+            result.diagonals.add(new LineSegment(a, p));
             reflexChain.pop();
 
             // Add evertying but the last Point
@@ -470,23 +467,20 @@ List<LineSegment> getDiagonals(
         reflexChain.push(p.copy());
       } else {
         // Case 2b: p is not visible to the Relfex Chain, just add it
-        lastCase = CASE_2_B;
+        result.lastCase = AlgorithmCase.Case2b;
         reflexChain.push(p.copy());
       }
     }
 
     // The caller wants to know what the reflex chain is
     // This is not part of the algorithm
-    if (outReflexChain != null) {
-      outReflexChain.clear();
-      outReflexChain.setFrom(reflexChain);
-    }
+    result.lastReflexChain.setFrom(reflexChain);
 
     // Move to the next point
     prevPSide = pSide;
     pSide = getNextPoint(p, upperChain, lowerChain);
   }
 
-  return diagonals;
+  return result;
 }
 
