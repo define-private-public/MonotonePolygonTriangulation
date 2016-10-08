@@ -5,7 +5,6 @@
 
 library triangulate;
 
-//import 'dart:io';
 import 'stack.dart';
 
 
@@ -331,49 +330,38 @@ Point getPointAtProcessingIndex(List<Point> polygon, int index) {
 }
 
 
-// TODO document
-bool isPointVisibleFromReflexChain(List<Point> reflexChain, FromChain reflexChainSide, Point p) {
+// Checks to see if (part of) the Reflex Chain can see a Point
+//   reflexChain -- a Stack of Points
+//   reflexChainSide -- Which chain (upper or lower) the Reflex chain is from
+//   p -- the Point to test
+//
+//   Return true if so, false otherwise
+bool isPointVisibleFromReflexChain(Stack<Point> reflexChain, FromChain reflexChainSide, Point p) {
+  // Need at least two points to test with
+  if (reflexChain.size() < 2)
+    return false;
+
+  // Get values
   Point a = reflexChain.peek(1);
   Point b = reflexChain.peek(0);
   num d = determinant(a, b, p);
 
-  // TODO remove result
-  bool result = false;
-//  if ((reflexChainSide == FromChain.Lower) && (d < 0))
-//    result = true;
-//  else if ((reflexChainSide == FromChain.Upper) && (d > 0))
-//    result = true;
-//  if ((reflexChainSide == FromChain.Lower) && (d > 0))
-//    result = true;
-//  else if ((reflexChainSide == FromChain.Upper) && (d < 0))
-//    result = true;
-
   // There are four cases where the point is visible
   if (reflexChainSide == FromChain.Upper) {
     if ((a.y > b.y) && (d > 0))
-      result = true;
+      return true;
     else if ((a.y < b.y) && (d < 0))
-      result = true;
+      return true;
   } else if (reflexChainSide == FromChain.Lower) {
     if ((a.y > b.y) && (d > 0))
-      result = true;
+      return true;
     else if ((a.y < b.y) && (d < 0))
-      result = true;
+      return true;
   }
 
-  // TODO remove after debuggin
-  print('--------');
-  print('A: ${a}');
-  print('B: ${b}');
-  print('P: ${p}');
-  print('chain: ${reflexChainSide}');
-  print('d=${d}');
-  print('result=${result}');
-  print('--------');
-
-  return result;
+  // Nope
+  return false;
 }
-
 
 
 // Does the Triangulation of the Polygon
@@ -464,7 +452,6 @@ TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxStep
 
       if (caseA) {
         // Case 2a: p is visible to part of the Relfex Chain
-        print('Case 2a');
         result.lastCase = AlgorithmCase.Case2a;
 
         // Keep going until we're not visible anymore
@@ -472,7 +459,6 @@ TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxStep
         bool done = false;
         while (!done) {
           addDiagonal = isPointVisibleFromReflexChain(reflexChain, reflexChainSide, p);
-          print('Add diagonal: ${addDiagonal}');
           
           // Either add or diagonal or stop addng them
           if (addDiagonal) {
@@ -493,7 +479,6 @@ TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxStep
         reflexChain.push(p.copy());
       } else {
         // Case 2b: p is not visible to the Relfex Chain, just add it
-        print('Case 2b');
         result.lastCase = AlgorithmCase.Case2b;
         reflexChain.push(p.copy());
       }
@@ -511,11 +496,3 @@ TriangulationResul triangulateXMontonePolygon( List<Point> polygon, [int maxStep
   return result;
 }
 
-
-void main() {
-  Point a = new Point(54, 258);
-  Point b = new Point(90, 163);
-  Point p = new Point(149, 119);
-
-  print(determinant(a, b, p));
-}

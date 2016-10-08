@@ -161,7 +161,7 @@ void drawSceneAndUpdateHTML() {
 
   String polygonClr = monotoneLineClr;
 
-  // Get the chains, Have to do a swap becuase Canvas is an upside down cartesian graph
+  // Get the chains
   List<Point> upperChain = [], lowerChain = [];
   bool gotChains = getUpperAndLowerChains(masterPolygon, upperChain, lowerChain);
 
@@ -192,6 +192,8 @@ void drawSceneAndUpdateHTML() {
     // Do some extra drawing if in step through mode
     if (stepThroughMode) {
       // Draw the Upper & Lower Chains
+      // Because the Canvas is a flipped cartesian graph, we're swapping the colors for what we said
+      // we were going to do in the HTML info box
       for (Point p in upperChain)
         drawPoint(canvasCtx, p, upperChainPointClr);
       for (Point p in lowerChain)
