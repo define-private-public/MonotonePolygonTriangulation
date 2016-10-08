@@ -348,6 +348,19 @@ bool isPointVisibleFromReflexChain(List<Point> reflexChain, FromChain reflexChai
 //  else if ((reflexChainSide == FromChain.Upper) && (d < 0))
 //    result = true;
 
+  // There are four cases where the point is visible
+  if (reflexChainSide == FromChain.Upper) {
+    if ((a.y > b.y) && (d > 0))
+      result = true;
+    else if ((a.y < b.y) && (d < 0))
+      result = true;
+  } else if (reflexChainSide == FromChain.Lower) {
+    if ((a.y > b.y) && (d > 0))
+      result = true;
+    else if ((a.y < b.y) && (d < 0))
+      result = true;
+  }
+
   // TODO remove after debuggin
   print('--------');
   print('A: ${a}');

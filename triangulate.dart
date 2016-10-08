@@ -69,7 +69,7 @@ void onPolygonChanged() {
 
   // Make sure the polygon is X Montone
   List<Point> upperChain = [], lowerChain = [];
-  bool gotChains = getUpperAndLowerChains(masterPolygon, lowerChain, upperChain);
+  bool gotChains = getUpperAndLowerChains(masterPolygon, upperChain, lowerChain);
   if (gotChains)
     triangulateToggle.disabled = !(isChainXMonotone(upperChain) && isChainXMonotone(lowerChain));
   else
